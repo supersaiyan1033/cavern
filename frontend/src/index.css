@@ -1,0 +1,16 @@
+.header-brand {
+  font-family: "Lobster", cursive;
+  color: #bc0335 !important;
+  font-size: xx-large !important;
+}
+.outernav {
+  padding: 7px 30px;
+}
+.navlink a {
+  padding-right: 40px !important;
+}
+.navlink a:hover {
+  color: #bc0335 !important;
+}
+.carouselSlider {
+}
