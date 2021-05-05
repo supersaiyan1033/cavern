@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication.apps.AuthenticationConfig',
+    'shopping.apps.ShoppingConfig',
     'rest_framework',
     'corsheaders',
+    'reset_migrations',
 ]
 
 MIDDLEWARE = [
@@ -79,11 +81,20 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dd6e474vr02j2j',
+        'USER': 'ajwosnrpqbxtcg',
+        'PASSWORD': '0c8a4937d555498124ac7b323d047826e85cd12ae014961be9516ed48d221946',
+        'HOST': 'ec2-3-215-57-87.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -123,7 +134,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+MEDIA_ROOT = 'static/images'
+MEDIA_URL = '/images/'
 CORS_ALLOW_ALL_ORIGINS = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
