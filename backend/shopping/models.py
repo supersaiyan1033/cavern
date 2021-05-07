@@ -86,3 +86,10 @@ class Offers(models.Model):
 
     def __str__(self):
         return self.offerId
+
+class Categories(models.Model):
+    categoryId = models.BigAutoField(primary_key =True)
+    category   = models.CharField(max_length=90)
+
+    def __str__(self):
+        return self.category
