@@ -17,10 +17,20 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from shopping import views as product_views
+from authentication import views as auth_views
 from django.conf.urls.static import static
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/products', product_views.getAllProducts, name="allProducts")
+    path('api/login/', auth_views.login, name="login"),
+    path('api/register/', auth_views.register, name="register"),
+    # path('api/users/login', auth_views.MyTokenObtainPairView.as_view(),
+    #      name='token_obtain_pair'),
+    path('api/product', product_views.getAllProducts, name="allProducts"),
+    path('api/carts', product_views.getAllCarts, name="allCarts")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

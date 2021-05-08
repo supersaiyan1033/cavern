@@ -25,7 +25,7 @@ class Stocks(models.Model):
     availableQuantity = models.IntegerField()
 
     def __str__(self):
-        return self.stockId
+        return str(self.stockId)
 
 
 class Ratings(models.Model):
@@ -38,7 +38,7 @@ class Ratings(models.Model):
     reviewedAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.ratingId
+        return str(self.ratingId)
 
 
 class Carts(models.Model):
@@ -48,7 +48,7 @@ class Carts(models.Model):
     quantity = models.IntegerField()
 
     def __str__(self):
-        return self.cartId
+        return str(self.cartId)
 
 
 class Orders(models.Model):
@@ -63,7 +63,7 @@ class Orders(models.Model):
     orderedAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.orderId
+        return str(self.orderId)
 
 
 class OrderedItems(models.Model):
@@ -76,7 +76,7 @@ class OrderedItems(models.Model):
     finalDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.orderedItemId
+        return str(self.orderedItemId)
 
 
 class Offers(models.Model):
@@ -85,11 +85,12 @@ class Offers(models.Model):
     discountPercent = models.DecimalField(decimal_places=2, max_digits=5)
 
     def __str__(self):
-        return self.offerId
+        return str(self.offerId)
+
 
 class Categories(models.Model):
-    categoryId = models.BigAutoField(primary_key =True)
-    category   = models.CharField(max_length=90)
+    categoryId = models.BigAutoField(primary_key=True)
+    category = models.CharField(max_length=90)
 
     def __str__(self):
         return self.category

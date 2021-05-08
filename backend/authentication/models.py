@@ -4,14 +4,10 @@ from django.db import models
 
 
 class Buyers(models.Model):
-    firstName = models.CharField(max_length=60)
-    lastName = models.CharField(max_length=60)
+    name = models.CharField(max_length=120, default='nitin')
     email = models.EmailField(max_length=100)
-    phone = models.BigIntegerField()
+    phone = models.CharField(max_length=10)
     password = models.CharField(max_length=254)
-    genderType = models.TextChoices('genderType', 'Male Female Others')
-    gender = models.CharField(choices=genderType.choices, max_length=6)
-    dob = models.DateField()
     buyerId = models.BigAutoField(primary_key=True)
 
     def __str__(self):
@@ -28,6 +24,7 @@ class Sellers(models.Model):
     verified = models.CharField(
         choices=types.choices, max_length=3, default='NO')
     address = models.CharField(max_length=254)
+    phone = models.CharField(max_length=10)
 
     def __str__(self):
         return self.name
@@ -37,7 +34,7 @@ class Admins(models.Model):
     adminId = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=150)
     email = models.EmailField(max_length=120)
-    phone = models.BigIntegerField()
+    phone = models.CharField(max_length=10)
     address = models.CharField(max_length=254)
     password = models.CharField(max_length=254)
 
