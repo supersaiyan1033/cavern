@@ -48,10 +48,44 @@ def login(request):
                 dictionary.update(serializer.data)
                 return Response(dictionary)
             else:
-                return Response("incorrect password try again!", status=500)
+                return Response({'message': 'Incorrect password!!'}, status=500)
         else:
-            return Response({'status': 'false', 'message': 'Register First!!'}, status=500)
-    return Response("user selected wrong role", status=500)
+            return Response({'message': 'Register First!!'}, status=404)
+    elif data['role'] == 'admin':
+        try:
+            admin = Admins.objects.get(email=data['email'])
+        except Admins.DoesNotExist:
+            admin = None
+        if admin != None:
+            serializer = AdminsSerializer(admin, many=False)
+            record = serializer.data
+            if check_password(data['password'], record['password']):
+                dictionary = {'role': data['role']}
+                dictionary.update(serializer.data)
+                return Response(dictionary)
+            else:
+                return Response({'message': 'Incorrect Password!!'}, status=500)
+        else:
+            return Response({'message': 'You are not an admin'}, status=500)
+    else:
+        try:
+            seller = Sellers.objects.get(email=data['email'])
+        except Sellers.DoesNotExist:
+            seller = None
+        if seller != None:
+            serializer = SellersSerializer(seller, many=False)
+            record = serializer.data
+            if record['verified'] == 'YES':
+                if check_password(data['password'], record['password']):
+                    dictionary = {'role': data['role']}
+                    dictionary.update(serializer.data)
+                    return Response(dictionary)
+                else:
+                    return Response({'message': 'Incorrect Password!!'}, status=500)
+            else:
+                return Response({'message': "You are not verified yet"}, status=500)
+        else:
+            return Response({'message': "Register First!!"}, status=500)
 
 
 @api_view(['POST'])
@@ -66,15 +100,18 @@ def register(request):
                 data['password'], salt=None, hasher='default')
         )
         serializer = BuyersSerializer(buyer, many=False)
+        dictionary = {'role': data['role']}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
     else:
         seller = Sellers.objects.create(
             name=data['name'],
             email=data['email'],
             phone=data['phone'],
+            company=data['company'],
+            address=data['address'],
             password=make_password(
                 data['password'], salt=None, hasher='default')
         )
         serializer = SellersSerializer(seller, many=False)
-    dictionary = {'role': data['role']}
-    dictionary.update(serializer.data)
-    return Response(dictionary)
+        return Response({'message': "seller under verification"}, status=500)

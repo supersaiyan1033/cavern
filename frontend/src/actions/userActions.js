@@ -65,9 +65,7 @@ export const login = (email, password,role) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
+            payload:error.response.data.message
         })
     }
 }
@@ -115,9 +113,7 @@ export const register = (name,email,phone,address, password,role,company) => asy
     } catch (error) {
         dispatch({
             type: USER_REGISTER_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
+            payload: error.response.data.message
         })
     }
 }
@@ -154,9 +150,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
+            payload: error.response.data.message
         })
     }
 }
