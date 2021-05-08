@@ -9,27 +9,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db import connection
 import bcrypt
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, Http404
-from .models import Admins, Buyers, Sellers
+from .models import Admins, Buyers, Sellers, ShippingAddresses
 from .serializers import *
 import base64
 from django.contrib.auth.hashers import *
 # Create your views here.
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['name'] = user.name
-        # ...
-
-        return token
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['POST'])
@@ -100,10 +84,15 @@ def register(request):
                 data['password'], salt=None, hasher='default')
         )
         serializer = BuyersSerializer(buyer, many=False)
+        address = ShippingAddresses.objects.create(
+            address=data['address'],
+            buyerId=buyer
+        )
         dictionary = {'role': data['role']}
         dictionary.update(serializer.data)
         return Response(dictionary)
     else:
+
         seller = Sellers.objects.create(
             name=data['name'],
             email=data['email'],
@@ -115,3 +104,8 @@ def register(request):
         )
         serializer = SellersSerializer(seller, many=False)
         return Response({'message': "seller under verification"}, status=500)
+
+
+@api_view(['GET'])
+def getUserDetails(request, userId):
+    return

@@ -11,7 +11,7 @@ class Buyers(models.Model):
     buyerId = models.BigAutoField(primary_key=True)
 
     def __str__(self):
-        return self.firstName
+        return self.name
 
 
 class Sellers(models.Model):

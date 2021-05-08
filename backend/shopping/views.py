@@ -8,7 +8,11 @@ from .models import Products, Carts
 
 @api_view(['GET'])
 def getAllProducts(request):
-    products = Products.objects.all()
+    query = request.query_params.get('keyword')
+    if query == None:
+        query = ''
+
+    products = Products.objects.filter(name__icontains=query)
     serializer = ProductsSerializer(products, many=True)
     return Response(serializer.data)
 

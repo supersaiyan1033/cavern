@@ -10,6 +10,8 @@ class Products(models.Model):
     category = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)
     details = models.CharField(max_length=254)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0)
+    votes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

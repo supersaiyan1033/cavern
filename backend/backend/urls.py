@@ -27,9 +27,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', auth_views.login, name="login"),
     path('api/register/', auth_views.register, name="register"),
+    path('api/users/<userId>', auth_views.getUserDetails, name="getUserDetails"),
     # path('api/users/login', auth_views.MyTokenObtainPairView.as_view(),
     #      name='token_obtain_pair'),
-    path('api/product', product_views.getAllProducts, name="allProducts"),
+    path('api/products', product_views.getAllProducts, name="allProducts"),
+    path('api/products/top/', product_views.getAllProducts, name="allProducts"),
     path('api/carts', product_views.getAllCarts, name="allCarts")
 ]
 
