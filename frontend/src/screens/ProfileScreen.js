@@ -15,6 +15,9 @@ function ProfileScreen({ history }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [company,setCompany] = useState('')
+    const [address,setAddress] = useState('')
+    const [phone,setPhone] = useState('')
     const [message, setMessage] = useState('')
 
     const dispatch = useDispatch()
@@ -43,6 +46,7 @@ function ProfileScreen({ history }) {
             } else {
                 setName(user.name)
                 setEmail(user.email)
+                setAddress(user.address)
             }
         }
     }, [dispatch, history, userInfo, user, success])

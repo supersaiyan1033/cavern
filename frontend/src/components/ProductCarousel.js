@@ -22,12 +22,12 @@ function ProductCarousel() {
             : (
                 <Carousel pause='hover' className='bg-dark'>
                     {products.map(product => (
-                        <Carousel.Item key={product.productId}>
-                            <Link to={`/product/${product.productId}`}>
-                                <Image src={product.image} alt={product.name} fluid />
+                        <Carousel.Item key={product.stockId}>
+                            <Link to={`/product/${product.stockId}`}>
+                                <Image src={product.productId.image} alt={product.productId.name} fluid />
                                 <Carousel.Caption className='carousel.caption'>
-                                    <h4>{product.name} 
-                                    {/* (${product.price}) */}
+                                    <h4>{product.productId.name} 
+                                    (&#8377;{product.price})
                                     </h4>
                                 </Carousel.Caption>
                             </Link>

@@ -78,10 +78,11 @@ export const listTopProducts = () => async (dispatch) => {
 
 export const listProductDetails = (id) => async (dispatch) => {
     try {
+        console.log(id)
         dispatch({ type: PRODUCT_DETAILS_REQUEST })
 
-        const { data } = await axios.get(`/api/products/${id}`)
-
+        const { data } = await axios.get(`/api/product/${id}`)
+        console.log(data)
         dispatch({
             type: PRODUCT_DETAILS_SUCCESS,
             payload: data
@@ -222,7 +223,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     }
 }
 
-export const createProductReview = (productId, review) => async (dispatch, getState) => {
+export const createProductReview = (productId, rating,review,userId) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRODUCT_CREATE_REVIEW_REQUEST
@@ -235,13 +236,13 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
         const config = {
             headers: {
                 'Content-type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`
+                // Authorization: `Bearer ${userInfo.token}`
             }
         }
 
         const { data } = await axios.post(
             `/api/products/${productId}/reviews/`,
-            review,
+            {'review':review,'rating':rating,'userId':userId},
             config
         )
         dispatch({
@@ -254,9 +255,7 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
     } catch (error) {
         dispatch({
             type: PRODUCT_CREATE_REVIEW_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
-                : error.message,
+            payload: error.response.data.message
         })
     }
 }

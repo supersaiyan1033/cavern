@@ -6,7 +6,7 @@ import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { listProductDetails, createProductReview } from '../actions/productActions'
-import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import { PRODUCT_CREATE_REVIEW_RESET, PRODUCT_DETAILS_RESET } from '../constants/productConstants'
 
 function ProductScreen({ match, history }) {
     const [qty, setQty] = useState(1)
@@ -29,6 +29,7 @@ function ProductScreen({ match, history }) {
     } = productReviewCreate
 
     useEffect(() => {
+        dispatch({type:PRODUCT_DETAILS_RESET})
         if (successProductReview) {
             setRating(0)
             setComment('')
@@ -36,8 +37,8 @@ function ProductScreen({ match, history }) {
         }
 
         dispatch(listProductDetails(match.params.id))
-
-    }, [dispatch, match, successProductReview])
+        console.log(product,match.params.id)
+    }, [dispatch, match.params.id, successProductReview])
 
     const addToCartHandler = () => {
         history.push(`/cart/${match.params.id}?qty=${qty}`)
@@ -46,10 +47,10 @@ function ProductScreen({ match, history }) {
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(createProductReview(
-            match.params.id, {
+            product.productId.productId, 
             rating,
-            comment
-        }
+            comment,
+            userInfo.buyerId,
         ))
     }
 
@@ -61,29 +62,32 @@ function ProductScreen({ match, history }) {
                 : error
                     ? <Message variant='danger'>{error}</Message>
                     : (
-                        <div>
-                            <Row>
-                                <Col md={6}>
-                                    <Image src={product.image} alt={product.name} fluid />
+                         <div>
+                        {product.productId?(
+                            <div>
+                             <Row>
+                                 <Col md={6}>
+                             
+                                    <Image src={product.productId.image} alt={product.productId.name} fluid />
                                 </Col>
 
 
                                 <Col md={3}>
                                     <ListGroup variant="flush">
                                         <ListGroup.Item>
-                                            <h3>{product.name}</h3>
+                                            <h3>{product.productId.name}</h3>
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
-                                            <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
+                                            <Rating value={product.productId.rating} text={`${product.productId.votes} reviews`} color={'#f8e825'} />
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
-                                            Price: ${product.price}
+                                            Price:  &#8377;{product.price}
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
-                                            Description: {product.description}
+                                            Description: {product.productId.details}
                                         </ListGroup.Item>
                                     </ListGroup>
                                 </Col>
@@ -96,7 +100,7 @@ function ProductScreen({ match, history }) {
                                                 <Row>
                                                     <Col>Price:</Col>
                                                     <Col>
-                                                        <strong>${product.price}</strong>
+                                                        <strong> &#8377;{product.price}</strong>
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -104,12 +108,12 @@ function ProductScreen({ match, history }) {
                                                 <Row>
                                                     <Col>Status:</Col>
                                                     <Col>
-                                                        {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                                                        {product.availableQuantity > 0 ? 'In Stock' : 'Out of Stock'}
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
 
-                                            {product.countInStock > 0 && (
+                                            {product.availableQuantity > 0 && (
                                                 <ListGroup.Item>
                                                     <Row>
                                                         <Col>Qty</Col>
@@ -121,7 +125,7 @@ function ProductScreen({ match, history }) {
                                                             >
                                                                 {
 
-                                                                    [...Array(product.countInStock).keys()].map((x) => (
+                                                                    [...Array(product.availableQuantity).keys()].map((x) => (
                                                                         <option key={x + 1} value={x + 1}>
                                                                             {x + 1}
                                                                         </option>
@@ -139,7 +143,7 @@ function ProductScreen({ match, history }) {
                                                 <Button
                                                     onClick={addToCartHandler}
                                                     className='btn-block'
-                                                    disabled={product.countInStock == 0}
+                                                    disabled={product.availableQuantity == 0}
                                                     type='button'>
                                                     Add to Cart
                                                 </Button>
@@ -147,20 +151,21 @@ function ProductScreen({ match, history }) {
                                         </ListGroup>
                                     </Card>
                                 </Col>
-                            </Row>
+                           
+                            </Row> 
 
                             <Row>
-                                <Col md={6}>
+                                 <Col md={6}>
                                     <h4>Reviews</h4>
                                     {product.reviews.length === 0 && <Message variant='info'>No Reviews</Message>}
 
                                     <ListGroup variant='flush'>
                                         {product.reviews.map((review) => (
-                                            <ListGroup.Item key={review._id}>
-                                                <strong>{review.name}</strong>
+                                            <ListGroup.Item key={review.ratingId}>
+                                                <strong>{review.buyerId.name}</strong> 
                                                 <Rating value={review.rating} color='#f8e825' />
-                                                <p>{review.createdAt.substring(0, 10)}</p>
-                                                <p>{review.comment}</p>
+                                                <p>{review.reviewedAt.substring(0, 10)}</p>
+                                                <p>{review.review}</p>
                                             </ListGroup.Item>
                                         ))}
 
@@ -213,9 +218,13 @@ function ProductScreen({ match, history }) {
                                                 )}
                                         </ListGroup.Item>
                                     </ListGroup>
-                                </Col>
-                            </Row>
-                        </div>
+                                </Col> 
+                            </Row> 
+                            </div> 
+                        ):(
+                            <div><h1>Error occured</h1></div>
+                        )}
+                        </div> 
                     )
 
             }

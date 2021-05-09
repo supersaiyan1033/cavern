@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Products, Carts
+from .models import *
+from authentication.models import Sellers
+from authentication.serializers import *
 
 
 class ProductsSerializer(serializers.ModelSerializer):
@@ -11,4 +13,21 @@ class ProductsSerializer(serializers.ModelSerializer):
 class CartsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carts
+        fields = '__all__'
+
+
+class StocksSerializer(serializers.ModelSerializer):
+    productId = ProductsSerializer(read_only=True)
+    sellerId = SellersSerializer(read_only=True)
+
+    class Meta:
+        model = Stocks
+        fields = '__all__'
+
+
+class RatingsSerializer(serializers.ModelSerializer):
+    buyerId = BuyersSerializer(read_only=True)
+
+    class Meta:
+        model = Ratings
         fields = '__all__'

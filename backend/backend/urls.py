@@ -31,6 +31,10 @@ urlpatterns = [
     # path('api/users/login', auth_views.MyTokenObtainPairView.as_view(),
     #      name='token_obtain_pair'),
     path('api/products', product_views.getAllProducts, name="allProducts"),
+    path('api/product/<Id>', product_views.getProductDetails,
+         name="product_details"),
+    path('api/products/<Id>/reviews/', product_views.reviewProduct,
+         name="review_product"),
     path('api/products/top/', product_views.getAllProducts, name="allProducts"),
     path('api/carts', product_views.getAllCarts, name="allCarts")
 ]
