@@ -35,7 +35,8 @@ import {
 /* admin func */
 import {
     verifiedSellersReducer,
-    unverifiedSellersReducer
+    unverifiedSellersReducer,
+    adminsListReducer
 } from './reducers/adminReducers'  
 
 
@@ -66,7 +67,9 @@ const reducer = combineReducers({
     orderDeliver: orderDeliverReducer,
 
     verifiedSellers:verifiedSellersReducer,
-    unverifiedSellers:unverifiedSellersReducer
+    unverifiedSellers:unverifiedSellersReducer,
+
+    adminsList:adminsListReducer
 })
 
 
@@ -89,7 +92,8 @@ const initialState = {
     userLogin: { userInfo: userInfoFromStorage },
 
     verifiedSellers:{verifiedSellers:[]},
-    unverifiedSellers:{unverifiedSellers:[]}
+    unverifiedSellers:{unverifiedSellers:[]},
+    adminsList :{adminsList:[]}
 }
 
 const middleware = [thunk]
