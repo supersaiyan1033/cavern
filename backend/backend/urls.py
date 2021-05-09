@@ -39,7 +39,12 @@ urlpatterns = [
     path('api/products/<Id>/reviews/', product_views.reviewProduct,
          name="review_product"),
     path('api/products/top/', product_views.getAllProducts, name="allProducts"),
-    path('api/carts', product_views.getAllCarts, name="allCarts")
+    path('api/carts', product_views.getAllCarts, name="allCarts"),
+    ##admin functionalities 
+    path('api/verifiedsellers/', auth_views.verifiedSellers, name="verifiedSellers"),
+    path('api/unverifiedsellers/', auth_views.unverifiedSellers, name="verifiedSellers"),
+    path('api/verifyseller/<sid>/', auth_views.verifySeller, name="verifySeller"),
+     path('api/removeseller/<sid>/', auth_views.removeSeller, name="removeSeller")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

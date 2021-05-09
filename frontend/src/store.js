@@ -32,6 +32,14 @@ import {
     orderDeliverReducer,
 } from './reducers/orderReducers'
 
+/* admin func */
+import {
+    verifiedSellersReducer,
+    unverifiedSellersReducer
+} from './reducers/adminReducers'  
+
+
+
 const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailsReducer,
@@ -56,6 +64,9 @@ const reducer = combineReducers({
     orderListMy: orderListMyReducer,
     orderList: orderListReducer,
     orderDeliver: orderDeliverReducer,
+
+    verifiedSellers:verifiedSellersReducer,
+    unverifiedSellers:unverifiedSellersReducer
 })
 
 
@@ -76,6 +87,9 @@ const initialState = {
         shippingAddress: shippingAddressFromStorage,
     },
     userLogin: { userInfo: userInfoFromStorage },
+
+    verifiedSellers:{verifiedSellers:[]},
+    unverifiedSellers:{unverifiedSellers:[]}
 }
 
 const middleware = [thunk]
