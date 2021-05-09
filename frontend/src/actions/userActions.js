@@ -137,7 +137,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `/api/users/${id}/`,
+            `/api/users/${id}/${userInfo.role}`,
             config
         )
 
@@ -169,13 +169,13 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         const config = {
             headers: {
                 'Content-type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`
+                // Authorization: `Bearer ${userInfo.token}`
             }
         }
 
-        const { data } = await axios.put(
-            `/api/users/profile/update/`,
-            user,
+        const { data } = await axios.post(
+            `/api/profile/update/`,
+            {'user':user,'role':userInfo.role},
             config
         )
 

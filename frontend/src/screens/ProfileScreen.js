@@ -36,17 +36,20 @@ function ProfileScreen({ history }) {
 
 
     useEffect(() => {
+       
         if (!userInfo) {
             history.push('/login')
         } else {
-            if (!user || !user.name || success || userInfo._id !== user._id) {
+            if (!user || !user.name || success ) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                dispatch(getUserDetails('profile'))
+                dispatch(getUserDetails(userInfo.role=='buyer'?userInfo.buyerId:userInfo.role=='seller'?userInfo.sellerId:userInfo.adminId))
                 dispatch(listMyOrders())
             } else {
                 setName(user.name)
                 setEmail(user.email)
                 setAddress(user.address)
+                setCompany(user.role=='seller'&&user.company)
+                setPhone(user.phone)
             }
         }
     }, [dispatch, history, userInfo, user, success])
@@ -58,11 +61,17 @@ function ProfileScreen({ history }) {
             setMessage('Passwords do not match')
         } else {
             dispatch(updateUserProfile({
-                'id': user._id,
+                'id': userInfo.role=='buyer'?user.buyerId:userInfo.role=='seller'?user.sellerId:user.adminId,
                 'name': name,
                 'email': email,
-                'password': password
+                'password': password,
+                'address':address,
+                'company':company,
+                'phone':phone
+
             }))
+             setPassword('')
+        setConfirmPassword('')
             setMessage('')
         }
 
@@ -100,7 +109,41 @@ function ProfileScreen({ history }) {
                         >
                         </Form.Control>
                     </Form.Group>
-
+                     <Form.Group controlId='phone'>
+                        <Form.Label>Mobile no</Form.Label>
+                        <Form.Control
+                            required
+                            type='text'
+                            placeholder='Enter Mobile no'
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                        >
+                        </Form.Control>
+                    </Form.Group>
+                    {userInfo.role=='seller'&&
+                          <Form.Group controlId='company'>
+                        <Form.Label>Email Address</Form.Label>
+                        <Form.Control
+                            required
+                            type='email'
+                            placeholder='Enter Company'
+                            value={company}
+                            onChange={(e) => setCompany(e.target.value)}
+                        >
+                        </Form.Control>
+                    </Form.Group>
+                    }
+                        <Form.Group controlId='address'>
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control
+                            required
+                            as="textarea"
+                            placeholder='Enter Address'
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        >
+                        </Form.Control>
+                        </Form.Group>
                     <Form.Group controlId='password'>
                         <Form.Label>Password</Form.Label>
                         <Form.Control

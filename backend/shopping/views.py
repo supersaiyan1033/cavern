@@ -51,8 +51,24 @@ def reviewProduct(request, Id):
     buyer = Buyers.objects.get(buyerId=buyerId)
     product = Products.objects.get(productId=Id)
     try:
-        record = Ratings.objects.get(buyerId=buyerId, productId=Id)
-        return Response({'message': 'You already reviewed this Product!'}, status=500)
+        count = Ratings.objects.filter(buyerId=buyerId, productId=Id).count()
+        print(count)
+        if count > 0:
+            return Response({'message': 'You already reviewed this Product!'}, status=500)
+        else:
+            record = Ratings.objects.create(
+                buyerId=buyer,
+                productId=product,
+                rating=data['rating'],
+                review=data['review'],
+            )
+            finalRating = Ratings.objects.filter(
+                productId=Id).aggregate(Avg('rating'))
+            product.votes = product.votes+1
+            product.rating = finalRating['rating__avg']
+            product.save()
+            serializer = RatingsSerializer(record, many=False)
+            return Response(serializer.data)
     except Ratings.DoesNotExist:
 
         record = Ratings.objects.create(

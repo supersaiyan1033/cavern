@@ -88,7 +88,7 @@ def register(request):
             address=data['address'],
             buyerId=buyer
         )
-        dictionary = {'role': data['role']}
+        dictionary = {'role': data['role'], 'address': data['address']}
         dictionary.update(serializer.data)
         return Response(dictionary)
     else:
@@ -107,5 +107,75 @@ def register(request):
 
 
 @api_view(['GET'])
-def getUserDetails(request, userId):
+def getUserDetails(request, Id, role):
+    if role == 'buyer':
+        buyer = Buyers.objects.get(buyerId=Id)
+        serializer = BuyersSerializer(buyer, many=False)
+        address = ShippingAddresses.objects.get(buyerId=Id)
+        serial = ShippingAddressesSerializer(address, many=False)
+        print(serial.data)
+        dictionary = {'role': role, 'address': serial.data['address']}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
+
+    elif role == 'seller':
+        seller = Sellers.objects.get(sellerId=Id)
+        serializer = SellersSerializer(seller, many=False)
+        dictionary = {'role': role}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
+    else:
+        admin = Admins.objects.get(adminId=Id)
+        serializer = AdminsSerializer(admin, many=False)
+        dictionary = {'role': role}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
+
+
+@api_view(['POST'])
+def updateProfile(request):
+    data = request.data
+    if data['role'] == 'buyer':
+        buyer = Buyers.objects.get(buyerId=data['user']['id'])
+        buyer.name = data['user']['name']
+        buyer.email = data['user']['email']
+        buyer.phone = data['user']['phone']
+        buyer.password = make_password(
+            data['user']['password'], salt=None, hasher='default')
+        buyer.save()
+        address = ShippingAddresses.objects.get(buyerId=data['user']['id'])
+        address.address = data['user']['address']
+        address.save()
+        serial = ShippingAddressesSerializer(address, many=False)
+        serializer = BuyersSerializer(buyer, many=False)
+        dictionary = {'role': data['role'], 'address': serial.data['address']}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
+    elif data['role'] == 'seller':
+        seller = Sellers.objects.get(sellerId=data['user']['id'])
+        seller.name = data['user']['name']
+        seller.email = data['user']['email']
+        seller.password = make_password(
+            data['user']['password'], salt=None, hasher='default')
+        seller.address = data['user']['address']
+        seller.phone = data['user']['phone']
+        seller.company = data['user']['company']
+        seller.save()
+        serializer = SellersSerializer(seller, many=False)
+        dictionary = {'role': data['role']}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
+    elif data['role'] == 'admin':
+        admin = Admins.objects.get(adminId=data['user']['id'])
+        admin.name = data['user']['name']
+        admin.email = data['user']['email']
+        admin.password = make_password(
+            data['user']['password'], salt=None, hasher='default')
+        admin.address = data['user']['address']
+        admin.phone = data['user']['phone']
+        admin.save()
+        serializer = AdminsSerializer(admin, many=False)
+        dictionary = {'role': data['role']}
+        dictionary.update(serializer.data)
+        return Response(dictionary)
     return
