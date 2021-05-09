@@ -179,3 +179,37 @@ def updateProfile(request):
         dictionary.update(serializer.data)
         return Response(dictionary)
     return
+
+#Admin related apis
+
+
+@api_view(['GET'])
+def verifiedSellers(request):
+    sellers=Sellers.objects.filter(verified='YES')
+    serializer=SellersSerializer(sellers,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def unverifiedSellers(request):
+    sellers=Sellers.objects.filter(verified='NO')
+    serializer=SellersSerializer(sellers,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def verifySeller(request,sid):
+    seller=Sellers.objects.get(sellerId=sid)
+    seller.verified='YES'
+    seller.save()
+    sellers=Sellers.objects.filter(verified='NO')
+    serializer=SellersSerializer(sellers,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def removeSeller(request,sid):
+    seller=Sellers.objects.get(sellerId=sid)
+    seller.delete()
+    sellers=Sellers.objects.filter(verified='YES')
+    serializer=SellersSerializer(sellers,many=True)
+    return Response(serializer.data)
+
+#Admin related apis

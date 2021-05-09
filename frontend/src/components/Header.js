@@ -95,10 +95,10 @@ function Header() {
                                     </Nav>
                                     <Nav className = "ml-5">
                                         <NavDropdown title='Seller' id='adminmenue'>
-                                        <LinkContainer to='/temp'>
-                                            <NavDropdown.Item>Verify</NavDropdown.Item>
+                                        <LinkContainer to='/unverifiedsellers'>
+                                            <NavDropdown.Item>Approve</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/temp'>
+                                        <LinkContainer to='/verifiedsellers'>
                                             <NavDropdown.Item>Remove</NavDropdown.Item>
                                         </LinkContainer>
                                         </NavDropdown>

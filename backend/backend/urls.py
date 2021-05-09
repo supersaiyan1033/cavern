@@ -39,6 +39,12 @@ urlpatterns = [
     path('api/products/<Id>/reviews/', product_views.reviewProduct,
          name="review_product"),
     path('api/products/top/', product_views.getAllProducts, name="allProducts"),
+    path('api/carts', product_views.getAllCarts, name="allCarts"),
+    ##admin functionalities 
+    path('api/verifiedsellers/', auth_views.verifiedSellers, name="verifiedSellers"),
+    path('api/unverifiedsellers/', auth_views.unverifiedSellers, name="verifiedSellers"),
+    path('api/verifyseller/<sid>/', auth_views.verifySeller, name="verifySeller"),
+     path('api/removeseller/<sid>/', auth_views.removeSeller, name="removeSeller")
     path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
     path('api/mycart/<Id>', product_views.getCart, name="get_cart"),
     path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart")
