@@ -74,6 +74,7 @@ function ProductScreen({ match, history }) {
 
                                 <Col md={3}>
                                     <ListGroup variant="flush">
+                                       
                                         <ListGroup.Item>
                                             <h3>{product.productId.name}</h3>
                                         </ListGroup.Item>
@@ -96,6 +97,9 @@ function ProductScreen({ match, history }) {
                                 <Col md={3}>
                                     <Card>
                                         <ListGroup variant='flush'>
+                                         {!userInfo&&<ListGroup.Item>
+                                            <Message variant='info'>Login to Add to cart</Message>
+                                        </ListGroup.Item>}
                                             <ListGroup.Item>
                                                 <Row>
                                                     <Col>Price:</Col>
@@ -143,11 +147,13 @@ function ProductScreen({ match, history }) {
                                                 <Button
                                                     onClick={addToCartHandler}
                                                     className='btn-block'
-                                                    disabled={product.availableQuantity == 0}
+                                                    disabled={product.availableQuantity == 0||!userInfo}
                                                     type='button'>
                                                     Add to Cart
                                                 </Button>
                                             </ListGroup.Item>
+                                            
+                                            
                                         </ListGroup>
                                     </Card>
                                 </Col>

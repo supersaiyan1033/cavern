@@ -77,8 +77,8 @@ function ProfileScreen({ history }) {
 
     }
     return (
-        <Row>
-            <Col md={3}>
+        <Row >
+            <Col md={4}>
                 <h2>User Profile</h2>
 
                 {message && <Message variant='danger'>{message}</Message>}
@@ -175,7 +175,7 @@ function ProfileScreen({ history }) {
                 </Form>
             </Col>
 
-            <Col md={9}>
+            <Col md={8}>
                 <h2>My Orders</h2>
                 {loadingOrders ? (
                     <Loader />

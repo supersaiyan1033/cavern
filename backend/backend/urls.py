@@ -39,7 +39,9 @@ urlpatterns = [
     path('api/products/<Id>/reviews/', product_views.reviewProduct,
          name="review_product"),
     path('api/products/top/', product_views.getAllProducts, name="allProducts"),
-    path('api/carts', product_views.getAllCarts, name="allCarts")
+    path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
+    path('api/mycart/<Id>', product_views.getCart, name="get_cart"),
+    path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
