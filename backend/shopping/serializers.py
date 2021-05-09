@@ -10,18 +10,20 @@ class ProductsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CartsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Carts
-        fields = '__all__'
-
-
 class StocksSerializer(serializers.ModelSerializer):
     productId = ProductsSerializer(read_only=True)
     sellerId = SellersSerializer(read_only=True)
 
     class Meta:
         model = Stocks
+        fields = '__all__'
+
+
+class CartsSerializer(serializers.ModelSerializer):
+    stockId = StocksSerializer(read_only=True)
+
+    class Meta:
+        model = Carts
         fields = '__all__'
 
 

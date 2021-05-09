@@ -45,6 +45,9 @@ urlpatterns = [
     path('api/unverifiedsellers/', auth_views.unverifiedSellers, name="verifiedSellers"),
     path('api/verifyseller/<sid>/', auth_views.verifySeller, name="verifySeller"),
      path('api/removeseller/<sid>/', auth_views.removeSeller, name="removeSeller")
+    path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
+    path('api/mycart/<Id>', product_views.getCart, name="get_cart"),
+    path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
