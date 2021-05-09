@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Buyers, Sellers, Admins
+from .models import Buyers, Sellers, Admins, ShippingAddresses
 
 
 class BuyersSerializer(serializers.ModelSerializer):
@@ -17,4 +17,10 @@ class SellersSerializer(serializers.ModelSerializer):
 class AdminsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admins
+        fields = '__all__'
+
+
+class ShippingAddressesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddresses
         fields = '__all__'
