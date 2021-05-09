@@ -16,7 +16,7 @@ function PlaceOrderScreen({ history }) {
 
     const cart = useSelector(state => state.cart)
 
-    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
+    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.stockId.price * item.quantity, 0).toFixed(2)
     cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
     cart.taxPrice = Number((0.082) * cart.itemsPrice).toFixed(2)
 
@@ -57,11 +57,7 @@ function PlaceOrderScreen({ history }) {
 
                             <p>
                                 <strong>Shipping: </strong>
-                                {cart.shippingAddress.address},  {cart.shippingAddress.city}
-                                {'  '}
-                                {cart.shippingAddress.postalCode},
-                                {'  '}
-                                {cart.shippingAddress.country}
+                                {cart.shippingAddress.address},
                             </p>
                         </ListGroup.Item>
 
@@ -83,15 +79,15 @@ function PlaceOrderScreen({ history }) {
                                             <ListGroup.Item key={index}>
                                                 <Row>
                                                     <Col md={1}>
-                                                        <Image src={item.image} alt={item.name} fluid rounded />
+                                                        <Image src={item.stockId.productId.image} alt={item.dtockId.productId.name} fluid rounded />
                                                     </Col>
 
                                                     <Col>
-                                                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                                        <Link to={`/product/${item.stockId.stockId}`}>{item.stockId.productId.name}</Link>
                                                     </Col>
 
                                                     <Col md={4}>
-                                                        {item.qty} X ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                                                        {item.quantity} X ${item.stockId.price} = ${(item.quantity * item.stockId.price).toFixed(2)}
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>

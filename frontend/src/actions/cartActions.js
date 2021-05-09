@@ -67,6 +67,9 @@ export const getCart = () => async (dispatch, getState) => {
         type:CART_UPDATE,
         payload:information.data
     })
+    dispatch({
+        type:CART_UPDATE_SUCCESS
+    })
     // localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
 
