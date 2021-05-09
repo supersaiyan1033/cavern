@@ -88,25 +88,32 @@ function Header() {
 
                                 </Row>
                                 ):( <Row>
-                                <NavDropdown title='Admin' id='adminmenue'>
-                                 <LinkContainer to='/'>
-                                        <Navbar.Brand>Shopping Cavern</Navbar.Brand>
+                                    <Nav className="ml-auto">
+                                       <LinkContainer to='/'>
+                                          <Navbar.Brand>Shopping Cavern</Navbar.Brand>
+                                      </LinkContainer>
+                                    </Nav>
+                                    <Nav className = "ml-5">
+                                        <NavDropdown title='Seller' id='adminmenue'>
+                                        <LinkContainer to='/temp'>
+                                            <NavDropdown.Item>Verify</NavDropdown.Item>
                                         </LinkContainer>
-                                    <LinkContainer to='/admin/userlist'>
-                                        <NavDropdown.Item>Users</NavDropdown.Item>
-                                    </LinkContainer>
-
-                                    <LinkContainer to='/admin/productlist'>
-                                        <NavDropdown.Item>Products</NavDropdown.Item>
-                                    </LinkContainer>
-
-                                    <LinkContainer to='/admin/orderlist'>
-                                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                                    </LinkContainer>
-                                    
-                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-
-                                </NavDropdown>
+                                        <LinkContainer to='/temp'>
+                                            <NavDropdown.Item>Remove</NavDropdown.Item>
+                                        </LinkContainer>
+                                        </NavDropdown>
+                                        <NavDropdown title='Products' id='adminmenue'>
+                                        <LinkContainer to='/temp'>
+                                            <NavDropdown.Item>Delivered</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/temp'>
+                                            <NavDropdown.Item>Returned</NavDropdown.Item>
+                                        </LinkContainer>
+                                       </NavDropdown>
+                                       <NavDropdown title='Admin' id='adminmenue'>
+                                       <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                       </NavDropdown>
+                                   </Nav>
                                 </Row>)
                                 
 
