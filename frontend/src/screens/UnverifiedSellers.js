@@ -9,14 +9,20 @@ import { unverifiedSeller } from '../actions/adminActions'
 import { verifySeller } from '../actions/adminActions'
 import HomeScreen from './HomeScreen'
 
-function UnverifiedSellers (){
+function UnverifiedSellers ({history}){
     const dispatch = useDispatch()
     const data = useSelector(state => state.unverifiedSellers)
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
     const {error,loading,unverifiedSellers} = data
 
     useEffect(() => {
+        if(!userInfo)
+        {
+            history.push('/')
+        }
         dispatch(unverifiedSeller())
-    },[dispatch])
+    },[dispatch,userInfo])
     console.log(unverifiedSellers)
     return (
         <div>
@@ -55,7 +61,7 @@ function UnverifiedSellers (){
                     )
                       :
                       <div>
-                           <h1>home</h1>
+                           <h1>Home</h1>
                        </div>
                     }
                     

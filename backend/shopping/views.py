@@ -138,3 +138,76 @@ def deleteCartItem(request, Id):
     cart = Carts.objects.get(stockId=Id)
     cart.delete()
     return Response(status=200)
+
+
+@api_view(['GET'])
+def getOrderById(request, Id):
+    order = Orders.objects.get(orderId=Id)
+    serial = OrdersSerializer(order, many=False)
+    ordered = OrderedItems.objects.filter(orderId=Id)
+    serializer = OrderedItemsSerializer(ordered, many=True)
+    dictionary = {}
+    dictionary.update(serial.data)
+    dictionary.update({'items': serializer.data})
+    print(dictionary)
+    return Response(dictionary)
+
+
+@api_view(['GET'])
+def myOrders(request, Id):
+    buyer = Buyers.objects.get(buyerId=Id)
+    orders = Orders.objects.filter(buyerId=Id)
+    serial = OrdersSerializer(orders, many=True)
+    dictionary = serial.data
+    i = 0
+    for order in orders:
+        orderItem = OrderedItems.objects.filter(orderId=order.orderId)
+        serializer = OrderedItemsSerializer(orderItem, many=True)
+        dictionary[i].update({'items': serializer.data})
+    print(dictionary)
+    return Response(dictionary)
+
+
+@api_view(['POST'])
+def placeOrder(request):
+    data = request.data
+    buyer = Buyers.objects.get(buyerId=data['buyerId'])
+    order = Orders.objects.create(
+        buyerId=buyer,
+        address=data['order']['shippingAddress'],
+        totalAmount=data['order']['totalPrice'],
+        paymentMethod=data['order']['paymentMethod']
+    )
+    serial = OrdersSerializer(order, many=False)
+    dictionary = {}
+    dictionary.update(serial.data)
+    array = []
+    for cartItem in data['order']['cartItems']:
+        stock = Stocks.objects.get(stockId=cartItem['stockId']['stockId'])
+        if data['order']['paymentMethod'] == 'Cash on Delivery':
+            item = OrderedItems.objects.create(
+                orderId=order,
+                stockId=stock,
+                status='placed',
+                amount=cartItem['stockId']['price'],
+                quantity=cartItem['quantity']
+            )
+            serializer = OrderedItemsSerializer(item, many=False)
+            array.append(serializer.data)
+        else:
+            item = OrderedItems.objects.create(
+                orderId=order,
+                stockId=stock,
+                status='pending transaction',
+                amount=cartItem['stockId']['price'],
+                quantity=cartItem['quantity']
+            )
+            serializer = OrderedItemsSerializer(item, many=False)
+            array.append(serializer.data)
+        stock.availableQuantity = stock.availableQuantity - \
+            cartItem['quantity']
+        stock.save()
+    Carts.objects.filter(buyerId=data['buyerId']).delete()
+    dictionary.update({'items': array})
+    print(dictionary)
+    return Response(dictionary)

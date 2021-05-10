@@ -33,3 +33,20 @@ class RatingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ratings
         fields = '__all__'
+
+
+class OrdersSerializer(serializers.ModelSerializer):
+    buyerId = BuyersSerializer(read_only=True)
+
+    class Meta:
+        model = Orders
+        fields = '__all__'
+
+
+class OrderedItemsSerializer(serializers.ModelSerializer):
+    stockId = StocksSerializer(read_only=True)
+    orderId = OrdersSerializer(read_only=True)
+
+    class Meta:
+        model = OrderedItems
+        fields = '__all__'

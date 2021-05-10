@@ -55,7 +55,10 @@ urlpatterns = [
 
     path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
     path('api/mycart/<Id>', product_views.getCart, name="get_cart"),
-    path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart")
+    path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart"),
+    path('api/orders/add/', product_views.placeOrder, name="place_order"),
+    path('api/order/<Id>/', product_views.getOrderById, name="get_order"),
+    path('api/myorders/<Id>', product_views.myOrders, name="my-orders")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

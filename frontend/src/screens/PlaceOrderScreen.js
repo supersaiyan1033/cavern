@@ -41,14 +41,14 @@ function PlaceOrderScreen({ history }) {
        dispatch(getPaymentMethod())
         console.log(cartItems)
         if (success) {
-            history.push(`/order/${order._id}`)
+            history.push(`/order/${order.orderId}`)
             dispatch({ type: ORDER_CREATE_RESET })
         }
     }, [dispatch,success, history])
 
     const placeOrder = () => {
         dispatch(createOrder({
-            orderItems: cartItems,
+            cartItems: cartItems,
             shippingAddress: shippingAddress,
             paymentMethod: paymentMethod,
            itemsPrice: itemsPrice,
