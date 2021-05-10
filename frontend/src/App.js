@@ -17,14 +17,12 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
-
 import VerifiedSellers from './screens/VerifiedSellers' 
 import UnverifiedSellers from './screens/UnverifiedSellers' 
-
-
 import DeliverProducts from './screens/DeliverProducts' 
 import ReturnProducts from './screens/ReturnProducts' 
-
+import AddNewStocks from './screens/AddNewStocks' 
+import AddOldStocks from './screens/AddOldStocks' 
 import Admins from './screens/Admins' 
 
 function App() {
@@ -49,8 +47,12 @@ function App() {
 
           <Route path='/returnproducts' component={ReturnProducts} />
           <Route path='/deliverproducts' component={DeliverProducts} />
+
+          <Route path='/addoldstocks' component={AddOldStocks} />
+          <Route path='/addnewstocks' component={AddNewStocks} />
+          
              
-              {/* add or remove admins */}
+            
           <Route path='/admins' component={Admins} />      
              {/* add or remove admins */}
 
