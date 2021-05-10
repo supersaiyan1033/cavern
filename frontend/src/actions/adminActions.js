@@ -245,7 +245,7 @@ export const addAdmin = (name,email,phone) => async (dispatch) => {
     }
 }
 
-export const deliverProducts = () => async (dispatch) => {
+export const deliverProduct = () => async (dispatch) => {
     try {
         dispatch({
             type:DELIVER_PRODUCTS_REQUEST
@@ -277,7 +277,39 @@ export const deliverProducts = () => async (dispatch) => {
     }
 }
 
-export const returnProducts = () => async (dispatch) => {
+export const deliverParticularProduct = (oid) => async (dispatch) => {
+    try {
+        dispatch({
+            type:DELIVER_PRODUCTS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.get(
+            `/api/deliverproduct/${oid}`,
+            config
+        )
+
+        dispatch({
+            type: DELIVER_PRODUCTS_SUCCESS,
+            payload: data
+        })
+
+       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+
+    } catch (error) {
+        dispatch({
+            type: DELIVER_PRODUCTS_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const returnProduct = () => async (dispatch) => {
     try {
         dispatch({
             type:RETURN_PRODUCTS_REQUEST
@@ -291,6 +323,38 @@ export const returnProducts = () => async (dispatch) => {
 
         const { data } = await axios.get(
             '/api/returnproducts/',
+            config
+        )
+
+        dispatch({
+            type: RETURN_PRODUCTS_SUCCESS,
+            payload: data
+        })
+
+       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+
+    } catch (error) {
+        dispatch({
+            type: RETURN_PRODUCTS_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const returnParticularProduct = (oid) => async (dispatch) => {
+    try {
+        dispatch({
+            type:RETURN_PRODUCTS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.get(
+            `/api/returnproduct/${oid}`,
             config
         )
 

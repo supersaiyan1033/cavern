@@ -51,7 +51,9 @@ urlpatterns = [
     path('api/removeadmin/<aid>/', auth_views.removeAdmin, name="removeAdmin"),
     path('api/addadmin/', auth_views.addAdmin, name="addAdmin"),
     path('api/deliverproducts/', auth_views.deliverProducts, name="deliverProducts"),
+    path('api/deliverproduct/<oid>', auth_views.deliverParticularProduct, name="deliverParticularProduct"),
     path('api/returnproducts/', auth_views.returnProducts, name="returnProducts"),
+    path('api/returnproduct/<oid>', auth_views.returnParticularProduct, name="returnParticularProduct"),
 
     path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
     path('api/mycart/<Id>', product_views.getCart, name="get_cart"),

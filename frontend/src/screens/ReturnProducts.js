@@ -5,17 +5,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { returnProducts } from '../actions/adminActions'
+import { returnProduct } from '../actions/adminActions'
+import { returnParticularProduct } from '../actions/adminActions'
 import HomeScreen from './HomeScreen'
 
 
-function ReturnProducts (){
+function ReturnProducts ({history}){
     const dispatch = useDispatch()
     const data = useSelector(state => state.returnProducts)
-     const {error,loading, returnProducts} = data
+    const {error,loading, returnProducts} = data
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
     useEffect(() => {
-        dispatch(returnProducts())
-    },[dispatch])
+        if(!userInfo)
+        {
+            history.push('/')
+        }
+        dispatch(returnProduct())
+    },[dispatch,userInfo])
     return (
         <div>
             {loading
@@ -28,21 +35,21 @@ function ReturnProducts (){
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
+                                    <th>Id</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Company</th>
-                                    <th>Returned</th>
+                                    <th>Return</th>
                                 </tr>
                             </thead>
 
                              <tbody>
                                 {returnProducts.map(data => (
-                                    <tr key={data.sellerId}>
-                                         <td>{data.name}</td>
-                                        <td>{data.email}</td>
-                                        <td>{data.company}</td>
+                                    <tr key={data.orderedItemId}>
+                                        <td>{data.orderedItemId}</td>
+                                         <td>{data.orderId.buyerId.name}</td>
+                                        <td>{data.orderId.buyerId.email}</td>
                                         <td>
-                                            <Button  onClick={()=>console.log('hi')} >Returned</Button>
+                                            <Button  onClick={()=>dispatch(returnParticularProduct(data.orderedItemId))} >Returned</Button>
                                         </td>
                                     </tr>
                                 ))}

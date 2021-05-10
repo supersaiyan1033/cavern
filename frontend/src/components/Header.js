@@ -105,14 +105,17 @@ function Header() {
                                         </LinkContainer>
                                         </NavDropdown>
                                         <NavDropdown title='Products' id='adminmenue'>
-                                        <LinkContainer to='/deliveredproducts'>
-                                            <NavDropdown.Item>Delivered</NavDropdown.Item>
+                                        <LinkContainer to='/deliverproducts'>
+                                            <NavDropdown.Item>Deliver</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/returnedproducts'>
-                                            <NavDropdown.Item>Returned</NavDropdown.Item>
+                                        <LinkContainer to='/returnproducts'>
+                                            <NavDropdown.Item>Return</NavDropdown.Item>
                                         </LinkContainer>
                                        </NavDropdown>
                                        <NavDropdown title='Account' id='adminmenue'>
+                                       <LinkContainer to='/profile'>
+                                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                                        </LinkContainer>
                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                                        </NavDropdown>
                                    </Nav>

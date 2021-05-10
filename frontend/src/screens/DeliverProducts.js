@@ -6,17 +6,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { deliverProducts } from '../actions/adminActions'
+import { deliverProduct } from '../actions/adminActions'
+import { deliverParticularProduct } from '../actions/adminActions'
 import HomeScreen from './HomeScreen'
 
 
-function DeliverProducts (){
+function DeliverProducts ({history}){
     const dispatch = useDispatch()
     const data = useSelector(state => state.deliverProducts)
-     const {error,loading, deliverProducts} = data
+    const {error,loading, deliverProducts} = data
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
     useEffect(() => {
-        dispatch(deliverProducts())
-    },[dispatch])
+        if(!userInfo)
+        {
+            history.push('/')
+        }
+        dispatch(deliverProduct())
+    },[dispatch,userInfo])
     return (
         <div>
             {loading
@@ -29,21 +36,21 @@ function DeliverProducts (){
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
+                                    <th>Id</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Company</th>
-                                    <th>Delivered</th>
+                                    <th>email</th>
+                                    <th>Deliver</th>
                                 </tr>
                             </thead>
 
                              <tbody>
                                 {deliverProducts.map(data => (
-                                    <tr key={data.sellerId}>
-                                         <td>{data.name}</td>
-                                        <td>{data.email}</td>
-                                        <td>{data.company}</td>
+                                    <tr key={data.orderedItemId}>
+                                        <td>{data.orderedItemId}</td>
+                                        <td>{data.orderId.buyerId.name}</td>
+                                        <td>{data.orderId.buyerId.email}</td>
                                         <td>
-                                            <Button  onClick={()=>console.log('hi')} >Delivered</Button>
+                                            <Button  onClick={()=>dispatch(deliverParticularProduct(data.orderedItemId))} >Delivered</Button>
                                         </td>
                                     </tr>
                                 ))}

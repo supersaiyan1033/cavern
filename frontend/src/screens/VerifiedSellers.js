@@ -10,13 +10,19 @@ import { removeSeller } from '../actions/adminActions'
 import HomeScreen from './HomeScreen'
 
 
-function VerifiedSellers (){
+function VerifiedSellers ({history}){
     const dispatch = useDispatch()
     const data = useSelector(state => state.verifiedSellers)
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
      const {error,loading, verifiedSellers} = data
     useEffect(() => {
+        if(!userInfo)
+        {
+            history.push('/')
+        }
         dispatch(verifiedSeller())
-    },[dispatch])
+    },[dispatch,userInfo])
     console.log(verifiedSellers)
     return (
         <div>
