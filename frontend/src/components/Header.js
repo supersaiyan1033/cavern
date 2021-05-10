@@ -40,7 +40,6 @@ function Header() {
                                     <Nav className = "ml-5">
 
                                         <LinkContainer to='/cart'>
-                    
                                         <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                                         </LinkContainer>
                                         
@@ -94,7 +93,10 @@ function Header() {
                                       </LinkContainer>
                                     </Nav>
                                     <Nav className = "ml-5">
-                                        <NavDropdown title='Seller' id='adminmenue'>
+                                    <LinkContainer to='/admins'>
+                                        <Nav.Link >Admins</Nav.Link>
+                                        </LinkContainer>
+                                        <NavDropdown title='Sellers' id='adminmenue'>
                                         <LinkContainer to='/unverifiedsellers'>
                                             <NavDropdown.Item>Approve</NavDropdown.Item>
                                         </LinkContainer>
@@ -110,7 +112,7 @@ function Header() {
                                             <NavDropdown.Item>Returned</NavDropdown.Item>
                                         </LinkContainer>
                                        </NavDropdown>
-                                       <NavDropdown title='Admin' id='adminmenue'>
+                                       <NavDropdown title='Account' id='adminmenue'>
                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                                        </NavDropdown>
                                    </Nav>

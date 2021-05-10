@@ -212,4 +212,26 @@ def removeSeller(request,sid):
     serializer=SellersSerializer(sellers,many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def adminsList(request):
+    adminslist=Admins.objects.all()
+    serializer=AdminsSerializer(adminslist,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def removeAdmin(request,aid):
+    admin=Admins.objects.get(adminId=aid)
+    admin.delete()
+    adminslist=Admins.objects.all()
+    serializer=AdminsSerializer(adminslist,many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def addAdmin(request):
+    data=request.data
+    admin=Admins.objects.create(name=data['name'],email=data['email'],phone=data['phone'])
+    adminslist=Admins.objects.all()
+    serializer=AdminsSerializer(adminslist,many=True)
+    return Response(serializer.data)
+
 #Admin related apis

@@ -7,7 +7,7 @@ import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { unverifiedSeller } from '../actions/adminActions'
 import { verifySeller } from '../actions/adminActions'
-
+import HomeScreen from './HomeScreen'
 
 function UnverifiedSellers (){
     const dispatch = useDispatch()
@@ -20,12 +20,14 @@ function UnverifiedSellers (){
     console.log(unverifiedSellers)
     return (
         <div>
-            <h1>Unverified Sellers</h1>
             {loading
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)
-                    : (
+                    :unverifiedSellers
+                       ? (
+                           <div>
+                               <h1>Unverified Sellers</h1>
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
@@ -44,15 +46,18 @@ function UnverifiedSellers (){
                                         <td>{data.company}</td>
                                         <td>
                                             <Button  onClick={()=>dispatch(verifySeller(data.sellerId))} >Approve</Button>
-                                            {/* <Button variant="secondary" type="submit">
-                                            Reject Order
-                                            </Button> */}
                                         </td>
                                      </tr>
                                 ))}
                             </tbody> 
                         </Table>
-                    )}
+                        </div>
+                    )
+                      :
+                      <div>
+                           <h1>home</h1>
+                       </div>
+                    }
                     
         </div>
     )

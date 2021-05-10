@@ -35,8 +35,8 @@ class Admins(models.Model):
     name = models.CharField(max_length=150)
     email = models.EmailField(max_length=120)
     phone = models.CharField(max_length=10)
-    address = models.CharField(max_length=254)
-    password = models.CharField(max_length=254)
+    address = models.CharField(max_length=254,default='')
+    password = models.CharField(max_length=254,default='bcrypt_sha256$$2b$12$AbIWHcvYkZ.AgqP7aPp88Ows5Ve9hIJDAgzP.sjqddlC22P2SDmfW')
 
     def __str__(self):
         return self.name

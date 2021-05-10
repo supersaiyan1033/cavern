@@ -7,6 +7,7 @@ import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { verifiedSeller } from '../actions/adminActions'
 import { removeSeller } from '../actions/adminActions'
+import HomeScreen from './HomeScreen'
 
 
 function VerifiedSellers (){
@@ -19,13 +20,13 @@ function VerifiedSellers (){
     console.log(verifiedSellers)
     return (
         <div>
-            <h1>Verified Sellers</h1>
-
             {loading
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)
-                    : (
+                    :verifiedSellers
+                       ? (<div>
+                        <h1>Verified Sellers</h1>
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
@@ -49,7 +50,12 @@ function VerifiedSellers (){
                                 ))}
                             </tbody> 
                         </Table>
-                    )}
+                        </div>
+                    )
+                       :<div>
+                           <h1>home</h1>
+                       </div>
+                    }
         </div>
     )
 }
