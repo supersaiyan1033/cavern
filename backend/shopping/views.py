@@ -188,17 +188,6 @@ def placeOrder(request):
             item = OrderedItems.objects.create(
                 orderId=order,
                 stockId=stock,
-                status='placed',
-                amount=cartItem['stockId']['price'],
-                quantity=cartItem['quantity']
-            )
-            serializer = OrderedItemsSerializer(item, many=False)
-            array.append(serializer.data)
-        else:
-            item = OrderedItems.objects.create(
-                orderId=order,
-                stockId=stock,
-                status='pending transaction',
                 amount=cartItem['stockId']['price'],
                 quantity=cartItem['quantity']
             )
