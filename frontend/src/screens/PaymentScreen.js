@@ -4,23 +4,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { savePaymentMethod } from '../actions/cartActions'
+import Loader from '../components/Loader'
 
 function PaymentScreen({ history }) {
 
-    const cart = useSelector(state => state.cart)
-    const { shippingAddress } = cart
+    const payment = useSelector(state => state.payment)
+    const shipping = useSelector(state=>state.shipping)
+    const {shippingAddress} = shipping
+    const { paymentMethod,getting } = payment
 
     const dispatch = useDispatch()
 
-    const [paymentMethod, setPaymentMethod] = useState('PayPal')
+    const [paymentmethod, setPaymentMethod] = useState('PayPal')
 
-    if (!shippingAddress.address) {
+    if (!shippingAddress) {
         history.push('/shipping')
     }
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(savePaymentMethod(paymentMethod))
+        dispatch(savePaymentMethod(paymentmethod))
         history.push('/placeorder')
     }
 
@@ -28,7 +31,7 @@ function PaymentScreen({ history }) {
         <FormContainer>
             <CheckoutSteps step1 step2 step3 />
 
-            <Form onSubmit={submitHandler}>
+           {getting?<Loader/>: <Form onSubmit={submitHandler}>
                 <Form.Group>
                     <Form.Label as='legend'>Select Method</Form.Label>
                     <Col>
@@ -38,17 +41,29 @@ function PaymentScreen({ history }) {
                             id='paypal'
                             name='paymentMethod'
                             checked
+                            value="PayPal"
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                        >
+
+                        </Form.Check>
+                         <Form.Check
+                            type='radio'
+                            label='Cash on Delivery'
+                            id='cod'
+                            name='paymentMethod'
+                            value="Cash on Delivery"
                             onChange={(e) => setPaymentMethod(e.target.value)}
                         >
 
                         </Form.Check>
                     </Col>
                 </Form.Group>
+                
 
                 <Button type='submit' variant='primary'>
                     Continue
                 </Button>
-            </Form>
+            </Form>}
         </FormContainer>
     )
 }

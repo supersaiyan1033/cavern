@@ -4,17 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { saveShippingAddress } from '../actions/cartActions'
-
+import Loader from '../components/Loader'
 function ShippingScreen({ history }) {
 
-    const cart = useSelector(state => state.cart)
-    const { shippingAddress } = cart
+    const shipping = useSelector(state => state.shipping)
+    const { shippingAddress,fetching } = shipping
 
     const dispatch = useDispatch()
-    const [address, setAddress] = useState(shippingAddress.address)
+    const [address, setAddress] = useState(shippingAddress)
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(saveShippingAddress({ address }))
+        dispatch(saveShippingAddress(address))
         history.push('/payment')
     }
 
@@ -22,7 +22,7 @@ function ShippingScreen({ history }) {
         <FormContainer>
             <CheckoutSteps step1 step2 />
             <h1>Shipping</h1>
-            <Form onSubmit={submitHandler}>
+           {fetching?<Loader/>: <Form onSubmit={submitHandler}>
 
                 <Form.Group controlId='address'>
                     <Form.Label>Address</Form.Label>
@@ -41,7 +41,7 @@ function ShippingScreen({ history }) {
                 <Button type='submit' variant='primary'>
                     Continue
                 </Button>
-            </Form>
+            </Form>}
         </FormContainer>
     )
 }

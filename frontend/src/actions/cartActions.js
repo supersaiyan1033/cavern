@@ -6,10 +6,12 @@ import {
     CART_SAVE_SHIPPING_ADDRESS,
     CART_ADD_REQUEST,
     CART_SAVE_PAYMENT_METHOD,
+    CART_GET_PAYMENT_METHOD,
     CART_UPDATE,
     CART_REMOVE_REQUEST,
     CART_REMOVE_SUCCESS,
-    CART_UPDATE_SUCCESS
+    CART_UPDATE_SUCCESS,
+    CART_GET_SHIPPING_ADDRESS
 } from '../constants/cartConstants'
 
 
@@ -93,8 +95,19 @@ export const saveShippingAddress = (data) => (dispatch) => {
         type: CART_SAVE_SHIPPING_ADDRESS,
         payload: data,
     })
+    dispatch({
+        type:CART_GET_SHIPPING_ADDRESS
+    })
 
     localStorage.setItem('shippingAddress', JSON.stringify(data))
+}
+
+export const getShippingAddress = () => (dispatch) => {
+   
+    dispatch({
+        type:CART_GET_SHIPPING_ADDRESS
+    })
+
 }
 
 export const savePaymentMethod = (data) => (dispatch) => {
@@ -102,6 +115,14 @@ export const savePaymentMethod = (data) => (dispatch) => {
         type: CART_SAVE_PAYMENT_METHOD,
         payload: data,
     })
+    dispatch({
+        type:CART_GET_PAYMENT_METHOD
+    })
 
     localStorage.setItem('paymentMethod', JSON.stringify(data))
+}
+export const getPaymentMethod = () => (dispatch) => {
+    dispatch({
+        type:CART_GET_PAYMENT_METHOD
+    })
 }
