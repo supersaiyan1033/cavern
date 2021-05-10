@@ -51,7 +51,8 @@ urlpatterns = [
     path('api/removeadmin/<aid>/', auth_views.removeAdmin, name="removeAdmin"),
     path('api/addadmin/', auth_views.addAdmin, name="addAdmin"),
     path('api/deliverproducts/', auth_views.deliverProducts, name="deliverProducts"),
-    path('api/deliverproduct/<oid>', auth_views.deliverParticularProduct, name="deliverParticularProduct"),
+    path('api/deliverproduct/<oid>', auth_views.deliverParticularProduct,
+         name="deliverParticularProduct"),
     path('api/returnproducts/', auth_views.returnProducts, name="returnProducts"),
     path('api/returnproduct/<oid>', auth_views.returnParticularProduct, name="returnParticularProduct"),
     path('api/addoldstocks/<sid>', auth_views.addOldStocks, name="addOldStocks"),
@@ -63,7 +64,9 @@ urlpatterns = [
     path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart"),
     path('api/orders/add/', product_views.placeOrder, name="place_order"),
     path('api/order/<Id>/', product_views.getOrderById, name="get_order"),
-    path('api/myorders/<Id>', product_views.myOrders, name="my-orders")
+    path('api/myorders/<Id>', product_views.myOrders, name="my-orders"),
+    path('api/cancel/', product_views.cancelOrder, name="cancel_order"),
+    path('api/return/', product_views.returnOrder, name="return_order")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

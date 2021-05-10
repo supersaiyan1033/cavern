@@ -132,9 +132,9 @@ function Header() {
 
                                     <SearchBox />
 
-                                    <LinkContainer to='/cart'>
+                                    {/* <LinkContainer to='/cart'>
                                     <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
-                                    </LinkContainer>
+                                    </LinkContainer> */}
 
                                     <LinkContainer to='/login'>
                                         <Nav.Link><i className="fas fa-user"></i>  Login</Nav.Link>

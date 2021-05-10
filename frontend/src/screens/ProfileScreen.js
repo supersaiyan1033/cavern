@@ -78,7 +78,7 @@ function ProfileScreen({ history }) {
     }
     return (
         <Row >
-            <Col md={4}>
+            <Col md={5}>
                 <h2>User Profile</h2>
 
                 {message && <Message variant='danger'>{message}</Message>}
@@ -175,7 +175,7 @@ function ProfileScreen({ history }) {
                 </Form>
             </Col>
 
-            <Col md={8}>
+            <Col md={7}>
                 <h2>My Orders</h2>
                 {loadingOrders ? (
                     <Loader />
@@ -188,8 +188,8 @@ function ProfileScreen({ history }) {
                                         <th>ID</th>
                                         <th>Date</th>
                                         <th>Total</th>
-                                        <th>Paid</th>
-                                        <th>Delivered</th>
+                                        {/* <th>Paid</th> */}
+                                        <th>Details</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -199,10 +199,10 @@ function ProfileScreen({ history }) {
                                         <tr key={order.orderId}>
                                             <td>{order.orderId}</td>
                                             <td>{order.orderedAt.substring(0, 10)}</td>
-                                            <td>${order.totalAmount}</td>
-                                            <td>{order.paid=='Yes' ? order.paidAt.substring(0, 10) : (
+                                            <td>&#8377;{order.totalAmount}</td>
+                                            {/* <td>{order.paid=='Yes' ? order.paidAt.substring(0, 10) : (
                                                 <i className='fas fa-times' style={{ color: 'red' }}></i>
-                                            )}</td>
+                                            )}</td> */}
                                             <td>
                                                 <LinkContainer to={`/order/${order.orderId}`}>
                                                     <Button className='btn-sm'>Details</Button>
