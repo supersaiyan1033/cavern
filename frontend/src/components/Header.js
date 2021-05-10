@@ -60,20 +60,22 @@ function Header() {
                                   <LinkContainer to='/'>
                                         <Navbar.Brand>Shopping Cavern</Navbar.Brand>
                                         </LinkContainer>
-                                    <LinkContainer to='/seller/addstock'>
-                                        <NavDropdown.Item>Add Stock</NavDropdown.Item>
+
+                                        <NavDropdown title='Add Stocks' id='username'>
+                                        <LinkContainer to='/addnewstocks'>
+                                            <NavDropdown.Item>New</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/addoldstocks'>
+                                            <NavDropdown.Item>Existing</NavDropdown.Item>
+                                        </LinkContainer>
+                                    </NavDropdown>
+
+                                    <LinkContainer to='/temp'>
+                                        <NavDropdown.Item>Orders</NavDropdown.Item>
                                     </LinkContainer>
 
-                                    <LinkContainer to='/seller/updatestock'>
-                                        <NavDropdown.Item>Update Stock</NavDropdown.Item>
-                                    </LinkContainer>
-
-                                    <LinkContainer to='/seller/userrequests'>
-                                        <NavDropdown.Item>User Requests</NavDropdown.Item>
-                                    </LinkContainer>
-
-                                    <LinkContainer to='/seller/addoffer'>
-                                        <NavDropdown.Item>Add Offer</NavDropdown.Item>
+                                    <LinkContainer to='/temp'>
+                                        <NavDropdown.Item>Offers</NavDropdown.Item>
                                     </LinkContainer>
 
                                     <NavDropdown title={userInfo.name} id='username'>

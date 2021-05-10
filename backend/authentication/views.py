@@ -253,7 +253,7 @@ def deliverParticularProduct(request,oid):
 
 @api_view(['GET'])
 def returnProducts(request):
-    returnProducts=OrderedItems.objects.filter(status='Delivered')
+    returnProducts=OrderedItems.objects.filter(status='In Return')
     serializer=OrderedItemsSerializer(returnProducts,many=True)
     return Response(serializer.data)
 
@@ -262,8 +262,33 @@ def returnParticularProduct(request,oid):
     item=OrderedItems.objects.get(orderedItemId=oid)
     item.status='Returned'
     item.save()
-    returnProducts=OrderedItems.objects.filter(status='Delivered')
+    returnProducts=OrderedItems.objects.filter(status='In Return')
     serializer=OrderedItemsSerializer(returnProducts,many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def addOldStocks(request,sid):
+    addOldStocks=Stocks.objects.filter(sellerId=sid)
+    serializer=StocksSerializer(addOldStocks,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def addOldParticularStock(request,sid,skid,quantity):
+    stock=Stocks.objects.get(stockId=skid)
+    previous=stock.totalQuantity
+    available=stock.availableQuantity
+    stock.totalQuantity=int(quantity)
+    stock.availableQuantity=available+int(quantity)-previous
+    stock.save()
+    addOldStocks=Stocks.objects.filter(sellerId=sid)
+    serializer=StocksSerializer(addOldStocks,many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def addNewParticularStock(request,sid):
+    data=request.data
+    product=Products.objects.create(name=data['Name'],brand=data['Brand'],category=data['Category'],details=data['Details'])
+    seller=Sellers.objects.get(sellerId=sid)
+    Stocks.objects.create(productId=product,sellerId=seller,price=int(data['Price']),totalQuantity=int(data['Quantity']),availableQuantity=int(data['Quantity']))
+    return Response([])
 #Admin related apis
