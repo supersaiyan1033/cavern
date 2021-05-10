@@ -29,7 +29,7 @@ function OrderScreen({ match, history }) {
 
 
     if (!loading && !error) {
-        order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
+        order.itemsPrice = order.items.reduce((acc, item) => acc + item.amount * item.quantity, 0).toFixed(2)
     }
 
 
@@ -50,12 +50,12 @@ function OrderScreen({ match, history }) {
             history.push('/login')
         }
 
-        if (!order || successPay || order._id !== Number(orderId) || successDeliver) {
+        if (!order || successPay || order.orderId !== Number(orderId) || successDeliver) {
             dispatch({ type: ORDER_PAY_RESET })
             dispatch({ type: ORDER_DELIVER_RESET })
 
             dispatch(getOrderDetails(orderId))
-        } else if (!order.isPaid) {
+        } else if (!order.paid=='Yes') {
             if (!window.paypal) {
                 addPayPalScript()
             } else {
@@ -79,24 +79,20 @@ function OrderScreen({ match, history }) {
         <Message variant='danger'>{error}</Message>
     ) : (
                 <div>
-                    <h1>Order: {order.Id}</h1>
+                    <h1>OrderId: {order.orderId}</h1>
                     <Row>
                         <Col md={8}>
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>
                                     <h2>Shipping</h2>
-                                    <p><strong>Name: </strong> {order.user.name}</p>
-                                    <p><strong>Email: </strong><a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
+                                    <p><strong>Name: </strong> {order.buyerId.name}</p>
+                                    <p><strong>Email: </strong><a href={`mailto:${order.buyerId.email}`}>{order.buyerId.email}</a></p>
                                     <p>
                                         <strong>Shipping: </strong>
-                                        {order.shippingAddress.address},  {order.shippingAddress.city}
-                                        {'  '}
-                                        {order.shippingAddress.postalCode},
-                                {'  '}
-                                        {order.shippingAddress.country}
+                                        {order.address}
                                     </p>
 
-                                    {order.isDelivered ? (
+                                    {order.status=='Delivered' ? (
                                         <Message variant='success'>Delivered on {order.deliveredAt}</Message>
                                     ) : (
                                             <Message variant='warning'>Not Delivered</Message>
@@ -109,7 +105,7 @@ function OrderScreen({ match, history }) {
                                         <strong>Method: </strong>
                                         {order.paymentMethod}
                                     </p>
-                                    {order.isPaid ? (
+                                    {order.paid=='Yes' ? (
                                         <Message variant='success'>Paid on {order.paidAt}</Message>
                                     ) : (
                                             <Message variant='warning'>Not Paid</Message>
@@ -119,23 +115,23 @@ function OrderScreen({ match, history }) {
 
                                 <ListGroup.Item>
                                     <h2>Order Items</h2>
-                                    {order.orderItems.length === 0 ? <Message variant='info'>
+                                    {order.items.length === 0 ? <Message variant='info'>
                                         Order is empty
                             </Message> : (
                                             <ListGroup variant='flush'>
-                                                {order.orderItems.map((item, index) => (
-                                                    <ListGroup.Item key={index}>
+                                                {order.items.map(item => (
+                                                    <ListGroup.Item key={item.orderedItemId}>
                                                         <Row>
                                                             <Col md={1}>
-                                                                <Image src={item.image} alt={item.name} fluid rounded />
+                                                                <Image src={item.stockId.productId.image} alt={item.stockId.productId.name} fluid rounded />
                                                             </Col>
 
                                                             <Col>
-                                                                <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                                                <Link to={`/product/${item.stockId.stockId}`}>{item.stockId.productId.name}</Link>
                                                             </Col>
 
                                                             <Col md={4}>
-                                                                {item.qty} X ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                                                                {item.quantity} X ${item.amount} = ${(item.quantity * item.amount).toFixed(2)}
                                                             </Col>
                                                         </Row>
                                                     </ListGroup.Item>
@@ -158,33 +154,33 @@ function OrderScreen({ match, history }) {
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Items:</Col>
-                                            <Col>${order.itemsPrice}</Col>
+                                            <Col>${order.totalAmount}</Col>
                                         </Row>
                                     </ListGroup.Item>
 
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Shipping:</Col>
-                                            <Col>${order.shippingPrice}</Col>
+                                            <Col>${0}</Col>
                                         </Row>
                                     </ListGroup.Item>
 
-                                    <ListGroup.Item>
+                                    {/* <ListGroup.Item>
                                         <Row>
                                             <Col>Tax:</Col>
-                                            <Col>${order.taxPrice}</Col>
+                                            <Col>${o}</Col>
                                         </Row>
-                                    </ListGroup.Item>
+                                    </ListGroup.Item> */}
 
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Total:</Col>
-                                            <Col>${order.totalPrice}</Col>
+                                            <Col>${order.totalAmount}</Col>
                                         </Row>
                                     </ListGroup.Item>
 
 
-                                    {!order.isPaid && (
+                                    {!order.paid=='Yes' && (
                                         <ListGroup.Item>
                                             {loadingPay && <Loader />}
 
@@ -192,15 +188,23 @@ function OrderScreen({ match, history }) {
                                                 <Loader />
                                             ) : (
                                                     <PayPalButton
-                                                        amount={order.totalPrice}
+                                                        amount={order.totalAmount}
                                                         onSuccess={successPaymentHandler}
                                                     />
                                                 )}
                                         </ListGroup.Item>
                                     )}
+                                    {order.paymentMethod=='Cash on Delivery'&&
+                                    ( <ListGroup.Item>
+                           <Button
+                            type='button'
+                            className='btn-block' >
+                        Cancel Order
+                        </Button>
+                    </ListGroup.Item>)}
                                 </ListGroup>
                                 {loadingDeliver && <Loader />}
-                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                {userInfo && userInfo.role=='admin' && order.paid=='Yes' && !order.status=='delivered' && (
                                     <ListGroup.Item>
                                         <Button
                                             type='button'

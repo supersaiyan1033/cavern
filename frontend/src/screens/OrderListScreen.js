@@ -51,28 +51,28 @@ function OrderListScreen({ history }) {
 
                             <tbody>
                                 {orders.map(order => (
-                                    <tr key={order._id}>
-                                        <td>{order._id}</td>
-                                        <td>{order.user && order.user.name}</td>
-                                        <td>{order.createdAt.substring(0, 10)}</td>
-                                        <td>${order.totalPrice}</td>
+                                    <tr key={order.orderId}>
+                                        <td>{order.orderId}</td>
+                                        <td>{order.buyerId.name}</td>
+                                        <td>{order.orderedAt.substring(0, 10)}</td>
+                                        <td>${order.totalAmount}</td>
 
-                                        <td>{order.isPaid ? (
+                                        {/* <td>{order.paid=='Yes' ? (
                                             order.paidAt.substring(0, 10)
                                         ) : (
                                                 <i className='fas fa-check' style={{ color: 'red' }}></i>
                                             )}
-                                        </td>
+                                        </td> */}
 
-                                        <td>{order.isDelivered ? (
+                                        {/* <td>{order.status=='delivered' ? (
                                             order.deliveredAt.substring(0, 10)
                                         ) : (
                                                 <i className='fas fa-check' style={{ color: 'red' }}></i>
                                             )}
-                                        </td>
+                                        </td> */}
 
                                         <td>
-                                            <LinkContainer to={`/order/${order._id}`}>
+                                            <LinkContainer to={`/order/${order.orderId}`}>
                                                 <Button variant='light' className='btn-sm'>
                                                     Details
                                                 </Button>

@@ -56,10 +56,13 @@ class Carts(models.Model):
 class Orders(models.Model):
     orderId = models.BigAutoField(primary_key=True)
     buyerId = models.ForeignKey(Buyers, on_delete=models.CASCADE)
-    addressId = models.ForeignKey(ShippingAddresses, on_delete=models.CASCADE)
+    address = models.CharField(max_length=254, default='')
+    # status = models.CharField(max_length=100, default="Order placed")
+    # paid = models.CharField(max_length=100, default="No")
     totalAmount = models.IntegerField()
+    # paidDate = models.DateTimeField(blank=True, null=True)
     paymentType = models.TextChoices(
-        'paymentType', '"cash on delivery" "paypal"')
+        'paymentType', '"Cash on Delivery"')
     paymentMethod = models.CharField(
         choices=paymentType.choices, max_length=20)
     orderedAt = models.DateTimeField(auto_now_add=True)
@@ -71,8 +74,9 @@ class Orders(models.Model):
 class OrderedItems(models.Model):
     orderId = models.ForeignKey(Orders, on_delete=models.CASCADE)
     stockId = models.ForeignKey(Stocks, on_delete=models.CASCADE)
-    serialId = models.CharField(max_length=100)
-    status = models.CharField(max_length=30)
+    serialId = models.CharField(max_length=100, blank=True)
+    status = models.CharField(max_length=30, default='Order Placed')
+    quantity = models.IntegerField(default=1)
     amount = models.IntegerField()
     orderedItemId = models.BigAutoField(primary_key=True)
     finalDate = models.DateTimeField(auto_now=True)
