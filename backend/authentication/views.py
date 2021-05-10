@@ -238,6 +238,12 @@ def addAdmin(request):
 def deliverProducts(request):
     adminslist=Admins.objects.all()
     serializer=AdminsSerializer(adminslist,many=True)
-    return Response(serializer.data)
+    return Response([])
+
+@api_view(['GET'])
+def returnProducts(request):
+    adminslist=Admins.objects.all()
+    serializer=AdminsSerializer(adminslist,many=True)
+    return Response([])
 
 #Admin related apis

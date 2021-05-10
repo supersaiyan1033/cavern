@@ -78,12 +78,12 @@ export const deliverProductsReducer = (state = { }, action) => {
             return { loading: true }
 
         case DELIVER_PRODUCTS_SUCCESS:
-            return { loading: false, verifiedSellers: action.payload }
+            return { loading: false, deliverProducts: action.payload }
 
         case DELIVER_PRODUCTS_FAIL:
             return { loading: false, error: action.payload }
         case DELIVER_PRODUCTS_RESET :
-            return {verifiedSellers:null}
+            return {deliverProducts:null}
         default:
             return state
     }
@@ -95,12 +95,12 @@ export const returnProductsReducer = (state = { }, action) => {
             return { loading: true }
 
         case RETURN_PRODUCTS_SUCCESS:
-            return { loading: false, verifiedSellers: action.payload }
+            return { loading: false, returnProducts: action.payload }
 
         case RETURN_PRODUCTS_FAIL:
             return { loading: false, error: action.payload }
         case RETURN_PRODUCTS_RESET :
-            return {verifiedSellers:null}
+            return {returnProducts:null}
         default:
             return state
     }
