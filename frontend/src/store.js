@@ -30,6 +30,8 @@ import {
     orderListMyReducer,
     orderListReducer,
     orderDeliverReducer,
+    cancelOrderReducer,
+    returnOrderReducer
 } from './reducers/orderReducers'
 
 /* admin func */
@@ -69,6 +71,8 @@ const reducer = combineReducers({
     orderListMy: orderListMyReducer,
     orderList: orderListReducer,
     orderDeliver: orderDeliverReducer,
+    cancelOrder:cancelOrderReducer,
+    returnOrder:returnOrderReducer,
 
     verifiedSellers:verifiedSellersReducer,
     unverifiedSellers:unverifiedSellersReducer,

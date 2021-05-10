@@ -5,6 +5,7 @@ from .serializers import *
 from .models import *
 from authentication.models import *
 from django.db.models import Avg
+import datetime
 # Create your views here.
 
 
@@ -149,7 +150,6 @@ def getOrderById(request, Id):
     dictionary = {}
     dictionary.update(serial.data)
     dictionary.update({'items': serializer.data})
-    print(dictionary)
     return Response(dictionary)
 
 
@@ -164,7 +164,6 @@ def myOrders(request, Id):
         orderItem = OrderedItems.objects.filter(orderId=order.orderId)
         serializer = OrderedItemsSerializer(orderItem, many=True)
         dictionary[i].update({'items': serializer.data})
-    print(dictionary)
     return Response(dictionary)
 
 
@@ -198,5 +197,29 @@ def placeOrder(request):
         stock.save()
     Carts.objects.filter(buyerId=data['buyerId']).delete()
     dictionary.update({'items': array})
-    print(dictionary)
     return Response(dictionary)
+
+
+@api_view(['POST'])
+def cancelOrder(request):
+    data = request.data
+    orderedItem = OrderedItems.objects.get(orderedItemId=data['orderedItemId'])
+    orderedItem.status = 'Cancelled'
+    order = Orders.objects.get(orderId=data['orderId'])
+    order.totalAmount = order.totalAmount - orderedItem.amount*orderedItem.quantity
+    order.save()
+    orderedItem.finalDate = datetime.now()
+    orderedItem.save()
+    return Response(status=200)
+
+
+def returnOrder(request):
+    data = request.data
+    orderedItem = OrderedItems.objects.get(orderedItemId=data['orderedItem'])
+    orderedItem.status = 'In Return'
+    order = Orders.objects.get(orderId=data['orderId'])
+    order.totalAmount = order.totalAmount - orderedItem.amount*orderedItem.quantity
+    order.save()
+    orderedItem.finalDate = datetime.now()
+    orderedItem.save()
+    return Response(status=200)
