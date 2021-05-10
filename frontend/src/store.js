@@ -36,7 +36,9 @@ import {
 import {
     verifiedSellersReducer,
     unverifiedSellersReducer,
-    adminsListReducer
+    adminsListReducer,
+    deliverProductsReducer,
+    returnProductsReducer
 } from './reducers/adminReducers'  
 
 
@@ -71,7 +73,10 @@ const reducer = combineReducers({
     verifiedSellers:verifiedSellersReducer,
     unverifiedSellers:unverifiedSellersReducer,
 
-    adminsList:adminsListReducer
+    adminsList:adminsListReducer,
+    returnProducts:returnProductsReducer,
+    deliverProducts:deliverProductsReducer
+    
 })
 
 
@@ -96,7 +101,9 @@ const initialState = {
     },
     verifiedSellers:{verifiedSellers:[]},
     unverifiedSellers:{unverifiedSellers:[]},
-    adminsList :{adminsList:[]}
+    adminsList :{adminsList:[]},
+    deliverProducts:{deliverProducts:[]},
+    returnProducts:{returnProducts:[]}
 }
 
 const middleware = [thunk]

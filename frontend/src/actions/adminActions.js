@@ -8,7 +8,15 @@ import {
     UNVERIFIED_SELLERS_FAIL,
     ADMINS_LIST_SUCCESS,
     ADMINS_LIST_REQUEST,
-    ADMINS_LIST_FAIL
+    ADMINS_LIST_FAIL,
+    RETURN_PRODUCTS_SUCCESS,
+    RETURN_PRODUCTS_REQUEST,
+    RETURN_PRODUCTS_FAIL,
+    RETURN_PRODUCTS_RESET,
+    DELIVER_PRODUCTS_SUCCESS,
+    DELIVER_PRODUCTS_REQUEST,
+    DELIVER_PRODUCTS_FAIL,
+    DELIVER_PRODUCTS_RESET
     
 } from '../constants/adminConstants'
 
@@ -232,6 +240,70 @@ export const addAdmin = (name,email,phone) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ADMINS_LIST_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const deliverProducts = () => async (dispatch) => {
+    try {
+        dispatch({
+            type:DELIVER_PRODUCTS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.get(
+            '/api/deliverproducts/',
+            config
+        )
+
+        dispatch({
+            type: DELIVER_PRODUCTS_SUCCESS,
+            payload: data
+        })
+
+       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+
+    } catch (error) {
+        dispatch({
+            type: DELIVER_PRODUCTS_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const returnProducts = () => async (dispatch) => {
+    try {
+        dispatch({
+            type:RETURN_PRODUCTS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        const { data } = await axios.get(
+            '/api/returnproducts/',
+            config
+        )
+
+        dispatch({
+            type: RETURN_PRODUCTS_SUCCESS,
+            payload: data
+        })
+
+       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+
+    } catch (error) {
+        dispatch({
+            type: RETURN_PRODUCTS_FAIL,
             payload:error.response.data.message
         })
     }

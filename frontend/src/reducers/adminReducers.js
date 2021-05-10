@@ -10,7 +10,15 @@ import {
     ADMINS_LIST_SUCCESS,
     ADMINS_LIST_REQUEST,
     ADMINS_LIST_FAIL,
-    ADMINS_LIST_RESET
+    ADMINS_LIST_RESET,
+    RETURN_PRODUCTS_SUCCESS,
+    RETURN_PRODUCTS_REQUEST,
+    RETURN_PRODUCTS_FAIL,
+    RETURN_PRODUCTS_RESET,
+    DELIVER_PRODUCTS_SUCCESS,
+    DELIVER_PRODUCTS_REQUEST,
+    DELIVER_PRODUCTS_FAIL,
+    DELIVER_PRODUCTS_RESET
 } from '../constants/adminConstants'
 
 export const verifiedSellersReducer = (state = { }, action) => {
@@ -59,6 +67,40 @@ export const adminsListReducer = (state = { }, action) => {
             return { loading: false, error: action.payload }
         case ADMINS_LIST_RESET :
             return {adminsList:null}
+        default:
+            return state
+    }
+}
+
+export const deliverProductsReducer = (state = { }, action) => {
+    switch (action.type) {
+        case DELIVER_PRODUCTS_REQUEST:
+            return { loading: true }
+
+        case DELIVER_PRODUCTS_SUCCESS:
+            return { loading: false, verifiedSellers: action.payload }
+
+        case DELIVER_PRODUCTS_FAIL:
+            return { loading: false, error: action.payload }
+        case DELIVER_PRODUCTS_RESET :
+            return {verifiedSellers:null}
+        default:
+            return state
+    }
+}
+
+export const returnProductsReducer = (state = { }, action) => {
+    switch (action.type) {
+        case RETURN_PRODUCTS_REQUEST:
+            return { loading: true }
+
+        case RETURN_PRODUCTS_SUCCESS:
+            return { loading: false, verifiedSellers: action.payload }
+
+        case RETURN_PRODUCTS_FAIL:
+            return { loading: false, error: action.payload }
+        case RETURN_PRODUCTS_RESET :
+            return {verifiedSellers:null}
         default:
             return state
     }
