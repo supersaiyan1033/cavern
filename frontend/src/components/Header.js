@@ -105,10 +105,10 @@ function Header() {
                                         </LinkContainer>
                                         </NavDropdown>
                                         <NavDropdown title='Products' id='adminmenue'>
-                                        <LinkContainer to='/temp'>
+                                        <LinkContainer to='/deliveredproducts'>
                                             <NavDropdown.Item>Delivered</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/temp'>
+                                        <LinkContainer to='/returnedproducts'>
                                             <NavDropdown.Item>Returned</NavDropdown.Item>
                                         </LinkContainer>
                                        </NavDropdown>

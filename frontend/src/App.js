@@ -21,6 +21,10 @@ import OrderListScreen from './screens/OrderListScreen'
 import VerifiedSellers from './screens/VerifiedSellers' 
 import UnverifiedSellers from './screens/UnverifiedSellers' 
 
+
+import DeliverProducts from './screens/DeliverProducts' 
+import ReturnProducts from './screens/ReturnProducts' 
+
 import Admins from './screens/Admins' 
 
 function App() {
@@ -42,6 +46,9 @@ function App() {
 
           <Route path='/verifiedsellers' component={VerifiedSellers} />
           <Route path='/unverifiedsellers' component={UnverifiedSellers} />
+
+          <Route path='/returnproducts' component={ReturnProducts} />
+          <Route path='/deliverproducts' component={DeliverProducts} />
              
               {/* add or remove admins */}
           <Route path='/admins' component={Admins} />      
