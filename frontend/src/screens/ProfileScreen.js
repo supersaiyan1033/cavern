@@ -43,7 +43,11 @@ function ProfileScreen({ history }) {
             if (!user || !user.name || success ) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails(userInfo.role=='buyer'?userInfo.buyerId:userInfo.role=='seller'?userInfo.sellerId:userInfo.adminId))
-                dispatch(listMyOrders())
+                if(userInfo.role=='buyer')
+                {
+                   dispatch(listMyOrders())
+                }
+               
             } else {
                 setName(user.name)
                 setEmail(user.email)
@@ -77,10 +81,9 @@ function ProfileScreen({ history }) {
 
     }
     return (
-        <Row >
-            <Col md={5}>
+        <Row className='justify-content-center'>
+            <Col md={userInfo.role=='buyer'?5:6}>
                 <h2>User Profile</h2>
-
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
                 {loading && <Loader />}
@@ -175,7 +178,7 @@ function ProfileScreen({ history }) {
                 </Form>
             </Col>
 
-            <Col md={7}>
+           {userInfo.role=='buyer'&& <Col md={7}>
                 <h2>My Orders</h2>
                 {loadingOrders ? (
                     <Loader />
@@ -213,7 +216,7 @@ function ProfileScreen({ history }) {
                                 </tbody>
                             </Table>
                         )}
-            </Col>
+            </Col>}
         </Row>
     )
 }
