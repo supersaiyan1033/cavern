@@ -39,7 +39,9 @@ import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
 import { VERIFIED_SELLERS_RESET,
     UNVERIFIED_SELLERS_RESET,
-    ADMINS_LIST_RESET
+    ADMINS_LIST_RESET,
+    RETURN_PRODUCTS_RESET,
+    DELIVER_PRODUCTS_RESET
    } from '../constants/adminConstants'
 
 export const login = (email, password,role) => async (dispatch) => {
@@ -85,6 +87,9 @@ export const logout = () => (dispatch) => {
     dispatch({ type: VERIFIED_SELLERS_RESET })
     dispatch({ type: UNVERIFIED_SELLERS_RESET }) 
     dispatch({ type: ADMINS_LIST_RESET})
+    dispatch({ type: RETURN_PRODUCTS_RESET})
+    dispatch({ type: DELIVER_PRODUCTS_RESET})
+
 }
 
 

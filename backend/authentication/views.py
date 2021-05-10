@@ -11,6 +11,8 @@ import bcrypt
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound, Http404
 from .models import Admins, Buyers, Sellers, ShippingAddresses
 from .serializers import *
+from shopping.models import *
+from shopping.serializers import *
 import base64
 from django.contrib.auth.hashers import *
 # Create your views here.
@@ -236,14 +238,32 @@ def addAdmin(request):
 
 @api_view(['GET'])
 def deliverProducts(request):
-    adminslist=Admins.objects.all()
-    serializer=AdminsSerializer(adminslist,many=True)
-    return Response([])
+    deliverProducts=OrderedItems.objects.filter(status='In Transit')
+    serializer=OrderedItemsSerializer(deliverProducts,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def deliverParticularProduct(request,oid):
+    item=OrderedItems.objects.get(orderedItemId=oid)
+    item.status='Delivered'
+    item.save()    
+    deliverProducts=OrderedItems.objects.filter(status='In Transit')
+    serializer=OrderedItemsSerializer(deliverProducts,many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def returnProducts(request):
-    adminslist=Admins.objects.all()
-    serializer=AdminsSerializer(adminslist,many=True)
-    return Response([])
+    returnProducts=OrderedItems.objects.filter(status='Delivered')
+    serializer=OrderedItemsSerializer(returnProducts,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def returnParticularProduct(request,oid):
+    item=OrderedItems.objects.get(orderedItemId=oid)
+    item.status='Returned'
+    item.save()
+    returnProducts=OrderedItems.objects.filter(status='Delivered')
+    serializer=OrderedItemsSerializer(returnProducts,many=True)
+    return Response(serializer.data)
 
 #Admin related apis

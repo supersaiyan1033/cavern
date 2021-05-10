@@ -11,16 +11,22 @@ import { addAdmin } from '../actions/adminActions'
 import HomeScreen from './HomeScreen'
 
 
-function Admins (){
+function Admins ({history}){
     const [name,setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const dispatch = useDispatch()
     const data = useSelector(state => state.adminsList)
-     const {error,loading, adminsList} = data
+    const {error,loading, adminsList} = data
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo} = userLogin
     useEffect(() => {
+        if(!userInfo)
+        {
+            history.push('/')
+        }
         dispatch(adminlist())
-    },[dispatch])
+    },[dispatch,userInfo])
 
     const submitHandler = (e) => {
         e.preventDefault()
