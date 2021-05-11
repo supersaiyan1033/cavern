@@ -135,7 +135,7 @@ function Header() {
                                     </LinkContainer>
 
                                     <SearchBox />
-
+                                   {/* <div style={{'padding':'20px'}}></div> */}
                                     {/* <LinkContainer to='/cart'>
                                     <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                                     </LinkContainer> */}
@@ -143,7 +143,7 @@ function Header() {
                                     <LinkContainer to='/login'>
                                         <Nav.Link><i className="fas fa-user"></i>  Login</Nav.Link>
                                     </LinkContainer>
-
+                                     {/* <div style={{'padding':'10px'}}></div> */}
                                     <LinkContainer to='/register'>
                                         <Nav.Link><i className="fas fa-user"></i>  Register</Nav.Link>
                                     </LinkContainer>

@@ -125,10 +125,10 @@ function ProfileScreen({ history }) {
                     </Form.Group>
                     {userInfo.role=='seller'&&
                           <Form.Group controlId='company'>
-                        <Form.Label>Email Address</Form.Label>
+                        <Form.Label>Company</Form.Label>
                         <Form.Control
                             required
-                            type='email'
+                            type='text'
                             placeholder='Enter Company'
                             value={company}
                             onChange={(e) => setCompany(e.target.value)}
