@@ -75,10 +75,10 @@ function Header() {
                                         <Nav.Link>Orders</Nav.Link>
                                     </LinkContainer>
                                     <NavDropdown title='Offers' id='username'>
-                                        <LinkContainer to='/temp'>
+                                        <LinkContainer to='/addoffers'>
                                             <NavDropdown.Item>Add</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/temp'>
+                                        <LinkContainer to='/removeoffers'>
                                             <NavDropdown.Item>Remove</NavDropdown.Item>
                                         </LinkContainer>
                                     </NavDropdown>

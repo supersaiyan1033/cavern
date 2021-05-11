@@ -5,33 +5,33 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { addOldStock } from '../actions/sellerActions'
-import { addOldParticularStock } from '../actions/sellerActions'
+import { addOffer } from '../actions/sellerActions'
+ import { addParticularOffer } from '../actions/sellerActions'
 import HomeScreen from './HomeScreen'
 
 
-function AddOldStocks ({history}){
+function AddOffers ({history}){
     const dispatch = useDispatch()
     const [StockId,setStockId]=useState('')
-    const [Quantity,setQuantity]=useState('')
-    const data = useSelector(state => state.addOldStocks)
+    const [Offer,setOffer]=useState('')
+    const data = useSelector(state => state.addOffers)
     const userLogin = useSelector(state=>state.userLogin)
     const {userInfo} = userLogin
-     const {error,loading, addOldStocks} = data
+     const {error,loading, addOffers} = data
     useEffect(() => {
         if(!userInfo)
         {
             history.push('/')
         }
         if(userInfo){
-            dispatch(addOldStock(userInfo.sellerId))
+        dispatch(addOffer(userInfo.sellerId))
         }
     },[dispatch,userInfo])
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(addOldParticularStock(userInfo.sellerId,StockId,Quantity))
+        dispatch(addParticularOffer(userInfo.sellerId,StockId,Offer))
         setStockId('')
-        setQuantity('')
+        setOffer('')
     }
     return (
         <div>
@@ -39,7 +39,7 @@ function AddOldStocks ({history}){
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)
-                    :addOldStocks
+                    :addOffers
                        ? (<div>
                            <Container>
                            <Form onSubmit={submitHandler} >
@@ -49,13 +49,13 @@ function AddOldStocks ({history}){
                           value={StockId}
                           onChange={(e) => setStockId(e.target.value)}/>
                           </Form.Group>
-                          <Form.Group controlId='quantity' >
+                          <Form.Group controlId='offer' >
                          <Form.Control 
-                        type="text" placeholder="Quantity"
-                        value={Quantity}
-                        onChange={(e) => setQuantity(e.target.value)} />
+                        type="text" placeholder="Percent"
+                        value={Offer}
+                        onChange={(e) => setOffer(e.target.value)} />
                         </Form.Group>
-                        <Button variant="primary" type="submit"> Update Stock </Button>
+                        <Button variant="primary" type="submit"> Add Offer </Button>
                           </Form>
                             </Container>
                         <h1>Existing Stocks</h1>
@@ -63,21 +63,17 @@ function AddOldStocks ({history}){
                             <thead>
                                 <tr>
                                     <th>StockId</th>
+                                    <th>Name</th>
                                     <th>Price</th>
-                                    <th>Last Updated</th>
-                                    <th>Available Quantity</th>
-                                    <th>Total Quantity</th>
                                 </tr>
                             </thead>
 
                              <tbody>
-                                {addOldStocks.map(data => (
+                                {addOffers.map(data => (
                                     <tr key={data.stockId}>
                                          <td>{data.stockId}</td>
+                                         <td>{data.productId.name}</td>
                                         <td>{data.price}</td>
-                                        <td>{data.dateOfAddition.substring(0,10)}</td>
-                                        <td>{data.availableQuantity}</td>
-                                        <td>{data.totalQuantity}</td>
                                     </tr>
                                 ))}
                             </tbody> 
@@ -92,7 +88,7 @@ function AddOldStocks ({history}){
     )
 }
 
-export default AddOldStocks
+export default AddOffers
 
 
 

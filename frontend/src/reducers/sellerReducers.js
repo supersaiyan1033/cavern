@@ -10,7 +10,15 @@ import {
     USER_ORDERS_PLACED_SUCCESS,
     USER_ORDERS_PLACED_REQUEST,
     USER_ORDERS_PLACED_FAIL,
-    USER_ORDERS_PLACED_RESET
+    USER_ORDERS_PLACED_RESET,
+    ADDOFFERS_SUCCESS,
+    ADDOFFERS_REQUEST,
+    ADDOFFERS_FAIL,
+    ADDOFFERS_RESET,
+    REMOVEOFFERS_SUCCESS,
+    REMOVEOFFERS_REQUEST,
+    REMOVEOFFERS_FAIL,
+    REMOVEOFFERS_RESET
 } from '../constants/sellerConstants'
 
 export const addNewStocksReducer = (state = { }, action) => {
@@ -59,6 +67,40 @@ export const userOrderRequestsReducer = (state = { }, action) => {
             return { loading: false, error: action.payload }
         case USER_ORDERS_PLACED_RESET :
             return {userOrderRequests:null}
+        default:
+            return state
+    }
+}
+
+export const addOffersReducer = (state = { }, action) => {
+    switch (action.type) {
+        case ADDOFFERS_REQUEST:
+            return { loading: true }
+
+        case ADDOFFERS_SUCCESS:
+            return { loading: false, addOffers: action.payload }
+
+        case ADDOFFERS_FAIL:
+            return { loading: false, error: action.payload }
+        case ADDOFFERS_RESET :
+            return {addOffers:null}
+        default:
+            return state
+    }
+}
+
+export const removeOffersReducer = (state = { }, action) => {
+    switch (action.type) {
+        case REMOVEOFFERS_REQUEST:
+            return { loading: true }
+
+        case REMOVEOFFERS_SUCCESS:
+            return { loading: false, removeOffers: action.payload }
+
+        case REMOVEOFFERS_FAIL:
+            return { loading: false, error: action.payload }
+        case REMOVEOFFERS_RESET :
+            return {removeOffers:null}
         default:
             return state
     }

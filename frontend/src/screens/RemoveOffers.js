@@ -5,24 +5,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { userOrderRequest } from '../actions/sellerActions'
-import { processRequest } from '../actions/sellerActions'
+import { removeOffer } from '../actions/sellerActions'
+import { removeParticularOffer } from '../actions/sellerActions'
 import HomeScreen from './HomeScreen'
 
 
-function UserOrderRequests ({history}){
+function RemoveOffers ({history}){
     const dispatch = useDispatch()
-    const data = useSelector(state => state.userOrderRequests)
+    const data = useSelector(state => state.removeOffers)
     const userLogin = useSelector(state=>state.userLogin)
     const {userInfo} = userLogin
-     const {error,loading, userOrderRequests} = data
+     const {error,loading, removeOffers} = data
     useEffect(() => {
         if(!userInfo)
         {
             history.push('/')
         }
         if(userInfo){
-        dispatch(userOrderRequest(userInfo.sellerId))
+        dispatch(removeOffer(userInfo.sellerId))
         }
     },[dispatch,userInfo])
     return (
@@ -31,29 +31,29 @@ function UserOrderRequests ({history}){
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)
-                    :userOrderRequests
+                    :removeOffers
                        ? (<div>
-                        <h1>User Orders</h1>
+                        <h1>Offers</h1>
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
-                                    <th>Product Name</th>
+                                    <th>Stock Id</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Date</th>
-                                    <th>Process</th>
+                                    <th>Price</th>
+                                    <th>offer Percent</th>
+                                    <th>Remove</th>
                                 </tr>
                             </thead>
 
                              <tbody>
-                                {userOrderRequests.map(data => (
-                                    <tr key={data.orderedItemId}>
+                                {removeOffers.map(data => (
+                                    <tr key={data.offerId}>
+                                        <td>{data.stockId.stockId}</td>       
                                         <td>{data.stockId.productId.name}</td>
-                                        <td>{data.orderId.buyerId.name}</td>
-                                        <td>{data.orderId.buyerId.email}</td>
-                                        <td>{data.finalDate.substring(0,10)}</td>
+                                        <td>{data.stockId.price}</td>
+                                        <td>{data.discountPercent}</td>
                                         <td>
-                                            <Button  onClick={()=>dispatch(processRequest(userInfo.sellerId,data.orderedItemId))} >Process</Button>
+                                            <Button onClick={()=>dispatch(removeParticularOffer(userInfo.sellerId,data.offerId))} >Remove</Button>
                                         </td>
                                     </tr>
                                 ))}
@@ -69,5 +69,4 @@ function UserOrderRequests ({history}){
     )
 }
 
-export default UserOrderRequests
-
+export default RemoveOffers
