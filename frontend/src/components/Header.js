@@ -136,7 +136,7 @@ function Header() {
                                     {/* <LinkContainer to='/cart'>
                                     <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                                     </LinkContainer> */}
-
+                                    <Nav className="ml-auto">
                                     <LinkContainer to='/login'>
                                         <Nav.Link><i className="fas fa-user"></i>  Login</Nav.Link>
                                     </LinkContainer>
@@ -144,6 +144,7 @@ function Header() {
                                     <LinkContainer to='/register'>
                                         <Nav.Link><i className="fas fa-user"></i>  Register</Nav.Link>
                                     </LinkContainer>
+                                    </Nav>
 
                                     </Row>
                                 )}
