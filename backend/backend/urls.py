@@ -19,13 +19,12 @@ from django.conf import settings
 from shopping import views as product_views
 from authentication import views as auth_views
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html')),
     path('api/login/', auth_views.login, name="login"),
     path('api/register/', auth_views.register, name="register"),
     path('api/users/<userId>', auth_views.getUserDetails, name="getUserDetails"),
@@ -55,13 +54,10 @@ urlpatterns = [
     path('api/deliverproduct/<oid>', auth_views.deliverParticularProduct,
          name="deliverParticularProduct"),
     path('api/returnproducts/', auth_views.returnProducts, name="returnProducts"),
-    path('api/returnproduct/<oid>', auth_views.returnParticularProduct,
-         name="returnParticularProduct"),
+    path('api/returnproduct/<oid>', auth_views.returnParticularProduct, name="returnParticularProduct"),
     path('api/addoldstocks/<sid>', auth_views.addOldStocks, name="addOldStocks"),
-    path('api/addoldparticularstock/<sid>/<skid>/<quantity>/',
-         auth_views.addOldParticularStock, name="addOldParticularStock"),
-    path('api/addnewparticularstock/<sid>',
-         auth_views.addNewParticularStock, name="addNewParticularStock"),
+    path('api/addoldparticularstock/<sid>/<skid>/<quantity>/', auth_views.addOldParticularStock, name="addOldParticularStock"),
+    path('api/addnewparticularstock/<sid>', auth_views.addNewParticularStock, name="addNewParticularStock"),
 
     path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
     path('api/mycart/<Id>', product_views.getCart, name="get_cart"),
@@ -74,4 +70,3 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
