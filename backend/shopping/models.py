@@ -74,7 +74,7 @@ class Orders(models.Model):
 class OrderedItems(models.Model):
     orderId = models.ForeignKey(Orders, on_delete=models.CASCADE)
     stockId = models.ForeignKey(Stocks, on_delete=models.CASCADE)
-    serialId = models.CharField(max_length=100, blank=True)
+    serialId = models.IntegerField(max_length=100, blank=True,default=0)
     status = models.CharField(max_length=30, default='Order Placed')
     quantity = models.IntegerField(default=1)
     amount = models.IntegerField()
