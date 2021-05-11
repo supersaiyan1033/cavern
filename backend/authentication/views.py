@@ -182,115 +182,143 @@ def updateProfile(request):
         return Response(dictionary)
     return
 
-#Admin related apis
+# Admin related apis
 
 
 @api_view(['GET'])
 def verifiedSellers(request):
-    sellers=Sellers.objects.filter(verified='YES')
-    serializer=SellersSerializer(sellers,many=True)
+    sellers = Sellers.objects.filter(verified='YES')
+    serializer = SellersSerializer(sellers, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def unverifiedSellers(request):
-    sellers=Sellers.objects.filter(verified='NO')
-    serializer=SellersSerializer(sellers,many=True)
+    sellers = Sellers.objects.filter(verified='NO')
+    serializer = SellersSerializer(sellers, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def verifySeller(request,sid):
-    seller=Sellers.objects.get(sellerId=sid)
-    seller.verified='YES'
+def verifySeller(request, sid):
+    seller = Sellers.objects.get(sellerId=sid)
+    seller.verified = 'YES'
     seller.save()
-    sellers=Sellers.objects.filter(verified='NO')
-    serializer=SellersSerializer(sellers,many=True)
+    sellers = Sellers.objects.filter(verified='NO')
+    serializer = SellersSerializer(sellers, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def removeSeller(request,sid):
-    seller=Sellers.objects.get(sellerId=sid)
+def removeSeller(request, sid):
+    seller = Sellers.objects.get(sellerId=sid)
     seller.delete()
-    sellers=Sellers.objects.filter(verified='YES')
-    serializer=SellersSerializer(sellers,many=True)
+    sellers = Sellers.objects.filter(verified='YES')
+    serializer = SellersSerializer(sellers, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def adminsList(request):
-    adminslist=Admins.objects.all()
-    serializer=AdminsSerializer(adminslist,many=True)
+    adminslist = Admins.objects.all()
+    serializer = AdminsSerializer(adminslist, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def removeAdmin(request,aid):
-    admin=Admins.objects.get(adminId=aid)
+def removeAdmin(request, aid):
+    admin = Admins.objects.get(adminId=aid)
     admin.delete()
-    adminslist=Admins.objects.all()
-    serializer=AdminsSerializer(adminslist,many=True)
+    adminslist = Admins.objects.all()
+    serializer = AdminsSerializer(adminslist, many=True)
     return Response(serializer.data)
+
 
 @api_view(['POST'])
 def addAdmin(request):
-    data=request.data
-    admin=Admins.objects.create(name=data['name'],email=data['email'],phone=data['phone'])
-    adminslist=Admins.objects.all()
-    serializer=AdminsSerializer(adminslist,many=True)
+    data = request.data
+    admin = Admins.objects.create(
+        name=data['name'], email=data['email'], phone=data['phone'])
+    adminslist = Admins.objects.all()
+    serializer = AdminsSerializer(adminslist, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def deliverProducts(request):
-    deliverProducts=OrderedItems.objects.filter(status='In Transit')
-    serializer=OrderedItemsSerializer(deliverProducts,many=True)
+    deliverProducts = OrderedItems.objects.filter(status='In Transit')
+    serializer = OrderedItemsSerializer(deliverProducts, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def deliverParticularProduct(request,oid):
-    item=OrderedItems.objects.get(orderedItemId=oid)
-    item.status='Delivered'
-    item.save()    
-    deliverProducts=OrderedItems.objects.filter(status='In Transit')
-    serializer=OrderedItemsSerializer(deliverProducts,many=True)
+def deliverParticularProduct(request, oid):
+    item = OrderedItems.objects.get(orderedItemId=oid)
+    item.status = 'Delivered'
+    item.save()
+    deliverProducts = OrderedItems.objects.filter(status='In Transit')
+    serializer = OrderedItemsSerializer(deliverProducts, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def returnProducts(request):
-    returnProducts=OrderedItems.objects.filter(status='In Return')
-    serializer=OrderedItemsSerializer(returnProducts,many=True)
+    returnProducts = OrderedItems.objects.filter(status='In Return')
+    serializer = OrderedItemsSerializer(returnProducts, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def returnParticularProduct(request,oid):
-    item=OrderedItems.objects.get(orderedItemId=oid)
-    item.status='Returned'
+def returnParticularProduct(request, oid):
+    item = OrderedItems.objects.get(orderedItemId=oid)
+    item.status = 'Returned'
     item.save()
-    returnProducts=OrderedItems.objects.filter(status='In Return')
-    serializer=OrderedItemsSerializer(returnProducts,many=True)
+    returnProducts = OrderedItems.objects.filter(status='In Return')
+    serializer = OrderedItemsSerializer(returnProducts, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def addOldStocks(request,sid):
-    addOldStocks=Stocks.objects.filter(sellerId=sid)
-    serializer=StocksSerializer(addOldStocks,many=True)
-    return Response(serializer.data)
 
 @api_view(['GET'])
-def addOldParticularStock(request,sid,skid,quantity):
-    stock=Stocks.objects.get(stockId=skid)
-    previous=stock.totalQuantity
-    available=stock.availableQuantity
-    stock.totalQuantity=int(quantity)
-    stock.availableQuantity=available+int(quantity)-previous
+def addOldStocks(request, sid):
+    addOldStocks = Stocks.objects.filter(sellerId=sid)
+    serializer = StocksSerializer(addOldStocks, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def addOldParticularStock(request, sid, skid, quantity):
+    stock = Stocks.objects.get(stockId=skid)
+    previous = stock.totalQuantity
+    available = stock.availableQuantity
+    stock.totalQuantity = int(quantity)
+    stock.availableQuantity = available+int(quantity)-previous
     stock.save()
-    addOldStocks=Stocks.objects.filter(sellerId=sid)
-    serializer=StocksSerializer(addOldStocks,many=True)
+    addOldStocks = Stocks.objects.filter(sellerId=sid)
+    serializer = StocksSerializer(addOldStocks, many=True)
     return Response(serializer.data)
+
 
 @api_view(['POST'])
-def addNewParticularStock(request,sid):
-    data=request.data
-    product=Products.objects.create(name=data['Name'],brand=data['Brand'],category=data['Category'],details=data['Details'])
-    seller=Sellers.objects.get(sellerId=sid)
-    Stocks.objects.create(productId=product,sellerId=seller,price=int(data['Price']),totalQuantity=int(data['Quantity']),availableQuantity=int(data['Quantity']))
-    return Response([])
+def addNewParticularStock(request, sid):
+    data = request.data
+    product = Products.objects.create(
+        name=data['Name'], brand=data['Brand'], category=data['Category'], details=data['Details'])
+    seller = Sellers.objects.get(sellerId=sid)
+    stock = Stocks.objects.create(productId=product, sellerId=seller, price=int(
+        data['Price']), totalQuantity=int(data['Quantity']), availableQuantity=int(data['Quantity']))
+    serializer = StocksSerializer(stock, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def imageUpload(request, Id):
+    data = request.data
+    product = Products.objects.get(productId=Id)
+    image = request.FILES.get('file')
+    product.image = image
+    product.save()
+    return Response(status=200)
+
 
 @api_view(['GET'])
 def userOrderRequests(request,sid):
@@ -304,6 +332,7 @@ def userOrderRequests(request,sid):
         except:
             i=1
     return Response(list)
+
 
 @api_view(['GET'])
 def processRequest(request,sid,oid):

@@ -48,7 +48,7 @@ export const addNewStock = () => async (dispatch) => {
     }
 }
 
-export const addNewParticularStock = (sid,Name,Brand,Category,Details,Price,Quantity) => async (dispatch) => {
+export const addNewParticularStock = (sid,Name,Brand,Category,Details,Price,Quantity,file) => async (dispatch) => {
     try {
         dispatch({
             type: ADDSTOCKS_NEW_REQUEST
@@ -60,11 +60,22 @@ export const addNewParticularStock = (sid,Name,Brand,Category,Details,Price,Quan
             }
         }
 
-        const { data } = await axios.post(
+       const {data} =  await axios.post(
             `/api/addnewparticularstock/${sid}`,
             {'Name':Name,'Brand':Brand,'Category':Category,'Details':Details,'Price':Price,'Quantity':Quantity},
             config
         )
+        const configuration ={
+            headers:{
+                'content-type':'multipart/form-data'
+            }
+        }
+        console.log(data)
+        const productId = data.productId.productId
+        const formData = new FormData();
+
+		formData.append('file', file)
+        await axios.post(`/api/image/${productId}`,formData,configuration)
 
         dispatch({
             type: ADDSTOCKS_NEW_SUCCESS,

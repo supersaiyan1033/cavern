@@ -54,7 +54,8 @@ urlpatterns = [
     path('api/deliverproduct/<oid>', auth_views.deliverParticularProduct,
          name="deliverParticularProduct"),
     path('api/returnproducts/', auth_views.returnProducts, name="returnProducts"),
-    path('api/returnproduct/<oid>', auth_views.returnParticularProduct, name="returnParticularProduct"),
+    path('api/returnproduct/<oid>', auth_views.returnParticularProduct,
+         name="returnParticularProduct"),
     path('api/addoldstocks/<sid>', auth_views.addOldStocks, name="addOldStocks"),
     path('api/addoldparticularstock/<sid>/<skid>/<quantity>/', auth_views.addOldParticularStock, name="addOldParticularStock"),
     path('api/addnewparticularstock/<sid>', auth_views.addNewParticularStock, name="addNewParticularStock"),
@@ -71,7 +72,8 @@ urlpatterns = [
     path('api/order/<Id>/', product_views.getOrderById, name="get_order"),
     path('api/myorders/<Id>', product_views.myOrders, name="my-orders"),
     path('api/cancel/', product_views.cancelOrder, name="cancel_order"),
-    path('api/return/', product_views.returnOrder, name="return_order")
+    path('api/return/', product_views.returnOrder, name="return_order"),
+    path('api/image/<Id>', auth_views.imageUpload, name="image_upload")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
