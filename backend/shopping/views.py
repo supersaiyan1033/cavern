@@ -5,7 +5,7 @@ from .serializers import *
 from .models import *
 from authentication.models import *
 from django.db.models import Avg
-import datetime
+from datetime import datetime
 # Create your views here.
 
 
@@ -214,9 +214,10 @@ def cancelOrder(request):
     return Response(status=200)
 
 
+@api_view(['POST'])
 def returnOrder(request):
     data = request.data
-    orderedItem = OrderedItems.objects.get(orderedItemId=data['orderedItem'])
+    orderedItem = OrderedItems.objects.get(orderedItemId=data['orderedItemId'])
     orderedItem.status = 'In Return'
     order = Orders.objects.get(orderId=data['orderId'])
     order.totalAmount = order.totalAmount - orderedItem.amount*orderedItem.quantity

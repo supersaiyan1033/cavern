@@ -129,8 +129,8 @@ function Header() {
                                 
 
                             ) : (   <Row>
-
-                                    <LinkContainer to='/'>
+                                    
+                                    <LinkContainer to='/' className='mr-auto'>
                                     <Navbar.Brand>Shopping Cavern</Navbar.Brand>
                                     </LinkContainer>
 
