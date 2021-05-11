@@ -6,7 +6,11 @@ import {
     ADDSTOCKS_OLD_SUCCESS,
     ADDSTOCKS_OLD_REQUEST,
     ADDSTOCKS_OLD_FAIL,
-    ADDSTOCKS_OLD_RESET
+    ADDSTOCKS_OLD_RESET,
+    USER_ORDERS_PLACED_SUCCESS,
+    USER_ORDERS_PLACED_REQUEST,
+    USER_ORDERS_PLACED_FAIL,
+    USER_ORDERS_PLACED_RESET
 } from '../constants/sellerConstants'
 
 export const addNewStocksReducer = (state = { }, action) => {
@@ -38,6 +42,23 @@ export const addOldStocksReducer = (state = { }, action) => {
             return { loading: false, error: action.payload }
         case ADDSTOCKS_OLD_RESET :
             return {addOldStocks:null}
+        default:
+            return state
+    }
+}
+
+export const userOrderRequestsReducer = (state = { }, action) => {
+    switch (action.type) {
+        case USER_ORDERS_PLACED_REQUEST:
+            return { loading: true }
+
+        case USER_ORDERS_PLACED_SUCCESS:
+            return { loading: false, userOrderRequests: action.payload }
+
+        case USER_ORDERS_PLACED_FAIL:
+            return { loading: false, error: action.payload }
+        case USER_ORDERS_PLACED_RESET :
+            return {userOrderRequests:null}
         default:
             return state
     }

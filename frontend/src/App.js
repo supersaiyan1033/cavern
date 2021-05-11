@@ -23,7 +23,8 @@ import DeliverProducts from './screens/DeliverProducts'
 import ReturnProducts from './screens/ReturnProducts' 
 import AddNewStocks from './screens/AddNewStocks' 
 import AddOldStocks from './screens/AddOldStocks' 
-import Admins from './screens/Admins' 
+import Admins from './screens/Admins'
+import UserOrderRequests from './screens/UserOrderRequests'
 
 function App() {
   return (
@@ -41,18 +42,15 @@ function App() {
           <Route path='/payment' component={PaymentScreen} />
           <Route path='/product/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
-
           <Route path='/verifiedsellers' component={VerifiedSellers} />
           <Route path='/unverifiedsellers' component={UnverifiedSellers} />
-
+          <Route path='/admins' component={Admins} /> 
           <Route path='/returnproducts' component={ReturnProducts} />
           <Route path='/deliverproducts' component={DeliverProducts} />
-
           <Route path='/addoldstocks' component={AddOldStocks} />
           <Route path='/addnewstocks' component={AddNewStocks} />
-          
+          <Route path='/userorderrequests' component={UserOrderRequests} />
              
-            
           <Route path='/admins' component={Admins} />      
              {/* add or remove admins */}
 
