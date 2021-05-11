@@ -188,7 +188,8 @@ def placeOrder(request):
                 orderId=order,
                 stockId=stock,
                 amount=cartItem['stockId']['price'],
-                quantity=cartItem['quantity']
+                quantity=cartItem['quantity'],
+                serialId=0
             )
             serializer = OrderedItemsSerializer(item, many=False)
             array.append(serializer.data)
