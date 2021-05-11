@@ -42,7 +42,7 @@ export const verifiedSeller = () => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+    
 
     } catch (error) {
         dispatch({
@@ -74,7 +74,7 @@ export const unverifiedSeller = () => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -106,7 +106,7 @@ export const verifySeller = (sid) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+     
 
     } catch (error) {
         dispatch({
@@ -138,7 +138,7 @@ export const removeSeller = (sid) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -170,7 +170,7 @@ export const adminlist = () => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -202,7 +202,7 @@ export const removeAdmin = (aid) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -235,7 +235,7 @@ export const addAdmin = (name,email,phone) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+     
 
     } catch (error) {
         dispatch({
@@ -267,7 +267,7 @@ export const deliverProduct = () => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -299,7 +299,7 @@ export const deliverParticularProduct = (oid) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -331,7 +331,7 @@ export const returnProduct = () => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
@@ -363,7 +363,7 @@ export const returnParticularProduct = (oid) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+   
 
     } catch (error) {
         dispatch({

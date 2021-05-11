@@ -46,6 +46,7 @@ import {
 import {
     addNewStocksReducer,
     addOldStocksReducer,
+    userOrderRequestsReducer
 } from './reducers/sellerReducers'
 
 
@@ -86,8 +87,8 @@ const reducer = combineReducers({
     deliverProducts:deliverProductsReducer,
 
     addNewStocks:addNewStocksReducer,
-    addOldStocks:addOldStocksReducer
-    
+    addOldStocks:addOldStocksReducer,
+    userOrderRequests:userOrderRequestsReducer
 })
 
 
@@ -116,7 +117,8 @@ const initialState = {
     deliverProducts:{deliverProducts:[]},
     returnProducts:{returnProducts:[]},
     addNewStocks:{addNewstocks:[]},
-    addOldStocks:{addOldStocks:[]}
+    addOldStocks:{addOldStocks:[]},
+    userOrderRequests:{userOrderRequests:[]}
 }
 
 const middleware = [thunk]

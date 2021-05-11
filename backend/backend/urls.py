@@ -58,6 +58,8 @@ urlpatterns = [
     path('api/addoldstocks/<sid>', auth_views.addOldStocks, name="addOldStocks"),
     path('api/addoldparticularstock/<sid>/<skid>/<quantity>/', auth_views.addOldParticularStock, name="addOldParticularStock"),
     path('api/addnewparticularstock/<sid>', auth_views.addNewParticularStock, name="addNewParticularStock"),
+    path('api/userorderrequests/', auth_views.userOrderRequests, name="userOrderRequests"),
+    path('api/processrequest/<oid>', auth_views.processRequest, name="processRequest"),
 
     path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
     path('api/mycart/<Id>', product_views.getCart, name="get_cart"),

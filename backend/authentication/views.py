@@ -291,4 +291,23 @@ def addNewParticularStock(request,sid):
     seller=Sellers.objects.get(sellerId=sid)
     Stocks.objects.create(productId=product,sellerId=seller,price=int(data['Price']),totalQuantity=int(data['Quantity']),availableQuantity=int(data['Quantity']))
     return Response([])
+
+@api_view(['GET'])
+def userOrderRequests(request):
+    userOrderRequests=OrderedItems.objects.filter(status='Order Placed')
+    serializer=OrderedItemsSerializer(userOrderRequests,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def processRequest(request,oid):
+    item=OrderedItems.objects.get(orderedItemId=oid)
+    StockId=item.stockId
+    previousitem=OrderedItems.objects.filter(stockId=StockId).order_by('-serialId')[0]
+    serial=previousitem.serialId
+    item.serialId=int(serial)+1
+    item.status='In Transit'
+    item.save()    
+    userOrderRequests=OrderedItems.objects.filter(status='Order Placed')
+    serializer=OrderedItemsSerializer(userOrderRequests,many=True)
+    return Response(serializer.data)
 #Admin related apis

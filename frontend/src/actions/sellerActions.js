@@ -7,7 +7,11 @@ import {
     ADDSTOCKS_OLD_SUCCESS,
     ADDSTOCKS_OLD_REQUEST,
     ADDSTOCKS_OLD_FAIL,
-    ADDSTOCKS_OLD_RESET
+    ADDSTOCKS_OLD_RESET,
+    USER_ORDERS_PLACED_SUCCESS,
+    USER_ORDERS_PLACED_REQUEST,
+    USER_ORDERS_PLACED_FAIL,
+    USER_ORDERS_PLACED_RESET
 } from '../constants/sellerConstants'
 
 export const addNewStock = () => async (dispatch) => {
@@ -26,7 +30,7 @@ export const addNewStock = () => async (dispatch) => {
             payload:[]
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+
 
     } catch (error) {
         dispatch({
@@ -59,7 +63,6 @@ export const addNewParticularStock = (sid,Name,Brand,Category,Details,Price,Quan
             payload: []
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
 
     } catch (error) {
         dispatch({
@@ -91,7 +94,7 @@ export const addOldStock = (sid) => async (dispatch) => {
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+     
 
     } catch (error) {
         dispatch({
@@ -123,11 +126,72 @@ export const addOldParticularStock = (sid,skid,quantity) => async (dispatch) => 
             payload: data
         })
 
-       /* localStorage.setItem('userInfo', JSON.stringify(data)) */
+      
 
     } catch (error) {
         dispatch({
             type: ADDSTOCKS_OLD_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+
+export const userOrderRequest = () => async (dispatch) => {
+    try {
+        dispatch({
+            type: USER_ORDERS_PLACED_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.get(
+            '/api/userorderrequests/',
+            config
+        )
+        dispatch({
+            type: USER_ORDERS_PLACED_SUCCESS,
+            payload:data
+        })
+
+      
+
+    } catch (error) {
+        dispatch({
+            type: USER_ORDERS_PLACED_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const processRequest = (oid) => async (dispatch) => {
+    try {
+        dispatch({
+            type: USER_ORDERS_PLACED_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.get(
+            `/api/processrequest/${oid}`,
+            config
+        )
+        dispatch({
+            type: USER_ORDERS_PLACED_SUCCESS,
+            payload:data
+        })
+
+     
+
+    } catch (error) {
+        dispatch({
+            type: USER_ORDERS_PLACED_FAIL,
             payload:error.response.data.message
         })
     }

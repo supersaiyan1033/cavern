@@ -71,14 +71,17 @@ function Header() {
                                         </LinkContainer>
                                     </NavDropdown>
 
-                                    <LinkContainer to='/temp'>
-                                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                                    <LinkContainer to='/userorderrequests'>
+                                        <Nav.Link>Orders</Nav.Link>
                                     </LinkContainer>
-
-                                    <LinkContainer to='/temp'>
-                                        <NavDropdown.Item>Offers</NavDropdown.Item>
-                                    </LinkContainer>
-
+                                    <NavDropdown title='Offers' id='username'>
+                                        <LinkContainer to='/temp'>
+                                            <NavDropdown.Item>Add</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/temp'>
+                                            <NavDropdown.Item>Remove</NavDropdown.Item>
+                                        </LinkContainer>
+                                    </NavDropdown>
                                     <NavDropdown title={userInfo.name} id='username'>
                                         <LinkContainer to='/profile'>
                                             <NavDropdown.Item>Profile</NavDropdown.Item>
