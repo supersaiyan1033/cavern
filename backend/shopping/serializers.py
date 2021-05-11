@@ -50,3 +50,9 @@ class OrderedItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderedItems
         fields = '__all__'
+
+class OffersSerializer(serializers.ModelSerializer):
+    stockId = StocksSerializer(read_only=True)
+    class Meta:
+        model = Offers
+        fields = '__all__'

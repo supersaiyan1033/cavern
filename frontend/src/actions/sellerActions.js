@@ -11,7 +11,15 @@ import {
     USER_ORDERS_PLACED_SUCCESS,
     USER_ORDERS_PLACED_REQUEST,
     USER_ORDERS_PLACED_FAIL,
-    USER_ORDERS_PLACED_RESET
+    USER_ORDERS_PLACED_RESET,
+    ADDOFFERS_SUCCESS,
+    ADDOFFERS_REQUEST,
+    ADDOFFERS_FAIL,
+    ADDOFFERS_RESET,
+    REMOVEOFFERS_SUCCESS,
+    REMOVEOFFERS_REQUEST,
+    REMOVEOFFERS_FAIL,
+    REMOVEOFFERS_RESET
 } from '../constants/sellerConstants'
 
 export const addNewStock = () => async (dispatch) => {
@@ -137,7 +145,7 @@ export const addOldParticularStock = (sid,skid,quantity) => async (dispatch) => 
 }
 
 
-export const userOrderRequest = () => async (dispatch) => {
+export const userOrderRequest = (sid) => async (dispatch) => {
     try {
         dispatch({
             type: USER_ORDERS_PLACED_REQUEST
@@ -149,7 +157,7 @@ export const userOrderRequest = () => async (dispatch) => {
             }
         }
         const { data } = await axios.get(
-            '/api/userorderrequests/',
+            `/api/userorderrequests/${sid}/`,
             config
         )
         dispatch({
@@ -167,7 +175,7 @@ export const userOrderRequest = () => async (dispatch) => {
     }
 }
 
-export const processRequest = (oid) => async (dispatch) => {
+export const processRequest = (sid,oid) => async (dispatch) => {
     try {
         dispatch({
             type: USER_ORDERS_PLACED_REQUEST
@@ -179,7 +187,7 @@ export const processRequest = (oid) => async (dispatch) => {
             }
         }
         const { data } = await axios.get(
-            `/api/processrequest/${oid}`,
+            `/api/processrequest/${sid}/${oid}/`,
             config
         )
         dispatch({
@@ -192,6 +200,118 @@ export const processRequest = (oid) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_ORDERS_PLACED_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const addOffer = (sid) => async (dispatch) => {
+    try {
+        dispatch({
+            type: ADDOFFERS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.get(
+            `/api/addoffers/${sid}/`,
+            config
+        )
+        dispatch({
+            type: ADDOFFERS_SUCCESS,
+            payload:data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: ADDOFFERS_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const addParticularOffer = (sid,skid,offer) => async (dispatch) => {
+    try {
+        dispatch({
+            type: ADDOFFERS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.get(
+            `/api/addparticularoffer/${sid}/${skid}/${offer}/`,
+            config
+        )
+        dispatch({
+            type: ADDOFFERS_SUCCESS,
+            payload:data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: ADDOFFERS_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const removeOffer = (sid) => async (dispatch) => {
+    try {
+        dispatch({
+            type: REMOVEOFFERS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.get(
+            `/api/removeoffers/${sid}`,
+            config
+        )
+        dispatch({
+            type: REMOVEOFFERS_SUCCESS,
+            payload:data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: REMOVEOFFERS_FAIL,
+            payload:error.response.data.message
+        })
+    }
+}
+
+export const removeParticularOffer = (sid,ofid) => async (dispatch) => {
+    try {
+        dispatch({
+            type: REMOVEOFFERS_REQUEST
+        })
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+        const { data } = await axios.get(
+            `/api/removeparticularoffer/${sid}/${ofid}/`,
+            config
+        )
+        dispatch({
+            type: REMOVEOFFERS_SUCCESS,
+            payload:data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: REMOVEOFFERS_FAIL,
             payload:error.response.data.message
         })
     }

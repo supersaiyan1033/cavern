@@ -293,22 +293,89 @@ def addNewParticularStock(request,sid):
     return Response([])
 
 @api_view(['GET'])
-def userOrderRequests(request):
-    userOrderRequests=OrderedItems.objects.filter(status='Order Placed')
-    serializer=OrderedItemsSerializer(userOrderRequests,many=True)
-    return Response(serializer.data)
+def userOrderRequests(request,sid):
+    temp=Stocks.objects.filter(sellerId=sid)
+    list=[]
+    for t in temp:
+        try:
+            request=OrderedItems.objects.filter(stockId=t.stockId,status='Order Placed')
+            serializer=OrderedItemsSerializer(request,many=False)
+            list.append(serializer.data)
+        except:
+            i=1
+    return Response(list)
 
 @api_view(['GET'])
-def processRequest(request,oid):
+def processRequest(request,sid,oid):
     item=OrderedItems.objects.get(orderedItemId=oid)
     StockId=item.stockId
     previousitem=OrderedItems.objects.filter(stockId=StockId).order_by('-serialId')[0]
     serial=previousitem.serialId
-    print(type(serial))
     item.serialId=int(serial)+1
     item.status='In Transit'
     item.save()    
-    userOrderRequests=OrderedItems.objects.filter(status='Order Placed')
-    serializer=OrderedItemsSerializer(userOrderRequests,many=True)
+    temp=Stocks.objects.filter(sellerId=sid)
+    list=[]
+    for t in temp:
+        try:
+            request=OrderedItems.objects.filter(stockId=t.stockId,status='Order Placed')
+            serializer=OrderedItemsSerializer(request,many=False)
+            list.append(serializer.data)
+        except:
+            i=1
+    return Response(list)
+
+@api_view(['GET'])
+def addOffers(request,sid):
+    stocks=Stocks.objects.filter(sellerId=sid)
+    serializer=StocksSerializer(stocks,many=True)
+    print(serializer.data)
     return Response(serializer.data)
-#Admin related apis
+
+@api_view(['GET'])
+def addParticularOffer(request,sid,skid,offer):
+    stock=Stocks.objects.get(stockId=int(skid))
+    Offers.objects.create(stockId=stock,discountPercent=int(offer))
+    price=stock.price
+    price=price*(0.01)*(100-int(offer))
+    stock.price=int(price)
+    stock.save()
+    stocks=Stocks.objects.filter(sellerId=sid)
+    serializer=StocksSerializer(stocks,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def removeOffers(request,sid):
+    list=[]
+    temp=Stocks.objects.filter(sellerId=sid)
+    for t in temp :
+        try:
+            offer=Offers.objects.get(stockId=t.stockId)
+            serializer= OffersSerializer(offer,many=False)
+            list.append(serializer.data)
+        except Offers.DoesNotExist: 
+            continue
+        return Response(list)
+
+@api_view(['GET'])
+def removeParticularOffer(request,sid,ofid):
+    o=Offers.objects.get(offerId=ofid)
+    per=o.discountPercent
+    id=o.stockId.stockId
+    print(type(id))
+    print(id)
+    s=Stocks.objects.get(stockId=id)
+    ip=s.price
+    s.price=int((100*ip)/(100-per))
+    s.save()
+    o.delete()
+    list=[]
+    temp=Stocks.objects.filter(sellerId=sid)
+    for t in temp :
+        try:
+            offer=Offers.objects.get(stockId=t.stockId)
+            serializer= OffersSerializer(offer,many=False)
+            list.append(serializer.data)
+        except Offers.DoesNotExist: 
+            continue
+        return Response(list)

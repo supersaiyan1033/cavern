@@ -25,6 +25,8 @@ import AddNewStocks from './screens/AddNewStocks'
 import AddOldStocks from './screens/AddOldStocks' 
 import Admins from './screens/Admins'
 import UserOrderRequests from './screens/UserOrderRequests'
+import AddOffers from './screens/AddOffers'
+import RemoveOffers from './screens/RemoveOffers'
 
 function App() {
   return (
@@ -50,7 +52,8 @@ function App() {
           <Route path='/addoldstocks' component={AddOldStocks} />
           <Route path='/addnewstocks' component={AddNewStocks} />
           <Route path='/userorderrequests' component={UserOrderRequests} />
-             
+          <Route path='/addoffers' component={AddOffers} />
+          <Route path='/removeoffers' component={RemoveOffers} />
           <Route path='/admins' component={Admins} />      
              {/* add or remove admins */}
 
