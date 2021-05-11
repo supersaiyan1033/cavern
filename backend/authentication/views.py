@@ -304,6 +304,7 @@ def processRequest(request,oid):
     StockId=item.stockId
     previousitem=OrderedItems.objects.filter(stockId=StockId).order_by('-serialId')[0]
     serial=previousitem.serialId
+    print(type(serial))
     item.serialId=int(serial)+1
     item.status='In Transit'
     item.save()    
