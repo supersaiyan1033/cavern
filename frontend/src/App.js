@@ -55,7 +55,6 @@ function App() {
           <Route path='/addoffers' component={AddOffers} />
           <Route path='/removeoffers' component={RemoveOffers} />
           <Route path='/admins' component={Admins} />      
-             {/* add or remove admins */}
 
           <Route path='/admin/productlist' component={ProductListScreen} />
           <Route path='/admin/product/:id/edit' component={ProductEditScreen} />

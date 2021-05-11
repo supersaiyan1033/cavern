@@ -33,7 +33,6 @@ function AddOldStocks ({history}){
     },[dispatch,userInfo])
     const changeHandler = (event) => {
 		setSelectedFile(event.target.files[0])
-    console.log('hii')
 		setIsFilePicked(true)
 	}
     const submitHandler = (e) => {
@@ -103,7 +102,7 @@ function AddOldStocks ({history}){
                         </div>
                     )
                        :<div>
-                          <h1>HOME</h1>
+                          <h1>No Items</h1>
                        </div>
                     }
         </div>

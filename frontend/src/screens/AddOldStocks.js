@@ -85,7 +85,7 @@ function AddOldStocks ({history}){
                         </div>
                     )
                        :<div>
-                          <h1>HOME</h1>
+                          <h1>No Items</h1>
                        </div>
                     }
         </div>

@@ -327,9 +327,10 @@ def userOrderRequests(request,sid):
     for t in temp:
         try:
             request=OrderedItems.objects.filter(stockId=t.stockId,status='Order Placed')
-            serializer=OrderedItemsSerializer(request,many=False)
-            list.append(serializer.data)
-        except:
+            for r in request:
+                serializer=OrderedItemsSerializer(r,many=False)
+                list.append(serializer.data)
+        except OrderedItems.DoesNotExist:
             i=1
     return Response(list)
 
@@ -348,8 +349,9 @@ def processRequest(request,sid,oid):
     for t in temp:
         try:
             request=OrderedItems.objects.filter(stockId=t.stockId,status='Order Placed')
-            serializer=OrderedItemsSerializer(request,many=False)
-            list.append(serializer.data)
+            for r in request :
+                serializer=OrderedItemsSerializer(r,many=False)
+                list.append(serializer.data)
         except:
             i=1
     return Response(list)
@@ -358,7 +360,6 @@ def processRequest(request,sid,oid):
 def addOffers(request,sid):
     stocks=Stocks.objects.filter(sellerId=sid)
     serializer=StocksSerializer(stocks,many=True)
-    print(serializer.data)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -381,10 +382,11 @@ def removeOffers(request,sid):
         try:
             offer=Offers.objects.get(stockId=t.stockId)
             serializer= OffersSerializer(offer,many=False)
+            print(serializer.data)
             list.append(serializer.data)
         except Offers.DoesNotExist: 
             continue
-        return Response(list)
+    return Response(list)
 
 @api_view(['GET'])
 def removeParticularOffer(request,sid,ofid):
@@ -407,4 +409,4 @@ def removeParticularOffer(request,sid,ofid):
             list.append(serializer.data)
         except Offers.DoesNotExist: 
             continue
-        return Response(list)
+    return Response(list)
