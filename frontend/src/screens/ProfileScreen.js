@@ -82,7 +82,7 @@ function ProfileScreen({ history }) {
     }
     return (
         <Row className='justify-content-center'>
-            <Col md={userInfo.role=='buyer'?5:6}>
+           {userInfo&& <Col md={userInfo.role=='buyer'?5:6}>
                 <h2>User Profile</h2>
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
@@ -177,8 +177,9 @@ function ProfileScreen({ history }) {
 
                 </Form>
             </Col>
+           }
 
-           {userInfo.role=='buyer'&& <Col md={7}>
+           {userInfo && userInfo.role=='buyer'&& <Col md={7}>
                 <h2>My Orders</h2>
                 {loadingOrders ? (
                     <Loader />
