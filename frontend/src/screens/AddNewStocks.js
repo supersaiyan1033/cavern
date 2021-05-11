@@ -18,6 +18,8 @@ function AddOldStocks ({history}){
     const [Details,setDetails]=useState('')
     const [Price,setPrice]=useState('')
     const [Quantity,setQuantity]=useState('')
+    const [selectedFile, setSelectedFile] = useState();
+   	const [isFilePicked, setIsFilePicked] = useState(false);
     const data = useSelector(state => state.addNewStocks)
     const userLogin = useSelector(state=>state.userLogin)
     const {userInfo} = userLogin
@@ -29,12 +31,19 @@ function AddOldStocks ({history}){
         }
         dispatch(addNewStock())
     },[dispatch,userInfo])
+    const changeHandler = (event) => {
+		setSelectedFile(event.target.files[0])
+    console.log('hii')
+		setIsFilePicked(true)
+	}
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(addNewParticularStock(userInfo.sellerId,Name,Brand,Category,Details,Price,Quantity))
+        dispatch(addNewParticularStock(userInfo.sellerId,Name,Brand,Category,Details,Price,Quantity,selectedFile))
         setName('')
         setBrand('')
         setCategory('Mobiles')
+        setSelectedFile(null)
+        setIsFilePicked(false)
         setDetails('')
         setPrice('')
         setQuantity('')
@@ -56,6 +65,17 @@ function AddOldStocks ({history}){
                         <Form.Label>Brand</Form.Label>
                         <Form.Control type="text" placeholder="Brand"  value={Brand}
                           onChange={(e) => setBrand(e.target.value)} />
+                           <Form.Group >
+                             <Form.Label>Image</Form.Label>
+                            {isFilePicked ? (
+			                        <Form.Control type="text" placeholder="selected file details" value={selectedFile.name}
+                           />
+		                         	) : (
+	                			<p>Select a file to show details</p>
+	                      		)}
+                      
+                        <Form.File label="Choose File" custom  onChange ={(e)=>changeHandler(e)} ></Form.File>
+                      </Form.Group>
                         <Form.Label>Category</Form.Label>
                         <Form.Control as="select"  value={Category}
                           onChange={(e) => setCategory(e.target.value)} >
