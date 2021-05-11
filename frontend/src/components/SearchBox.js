@@ -35,7 +35,7 @@ function SearchBox() {
                     variant='outline-success'
                     className='p-2'
                 >
-                    Submit
+                    Search
                 </Button>
                 </Col>
             </Row>
