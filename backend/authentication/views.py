@@ -323,8 +323,8 @@ def addOldParticularStock(request, sid, skid, quantity):
     stock = Stocks.objects.get(stockId=skid)
     previous = stock.totalQuantity
     available = stock.availableQuantity
-    stock.totalQuantity = int(quantity)
-    stock.availableQuantity = available+int(quantity)-previous
+    stock.totalQuantity = previous+int(quantity)
+    stock.availableQuantity = available+int(quantity)
     stock.save()
     addOldStocks = Stocks.objects.filter(sellerId=sid)
     serializer = StocksSerializer(addOldStocks, many=True)
