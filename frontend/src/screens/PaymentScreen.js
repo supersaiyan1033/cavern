@@ -44,6 +44,7 @@ function PaymentScreen({ history }) {
                             name='paymentMethod'
                             value="Cash on Delivery"
                             onChange={(e) => setPaymentMethod(e.target.value)}
+                            checked
                         >
 
                         </Form.Check>

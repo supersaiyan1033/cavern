@@ -16,12 +16,12 @@ function AddOffers ({history}){
     const [Offer,setOffer]=useState('')
     const data = useSelector(state => state.addOffers)
     const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
+    const {userInfo,loggingOut} = userLogin
      const {error,loading, addOffers} = data
     useEffect(() => {
         if(!userInfo)
         {
-            history.push('/')
+            history.push('/login')
         }
         if(userInfo){
         dispatch(addOffer(userInfo.sellerId))
@@ -35,7 +35,7 @@ function AddOffers ({history}){
     }
     return (
         <div>
-            {loading
+            {loading||loggingOut
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)

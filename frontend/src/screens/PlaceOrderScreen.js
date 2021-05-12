@@ -15,11 +15,13 @@ function PlaceOrderScreen({ history }) {
     const { order, error, success } = orderCreate
 
     const dispatch = useDispatch()
-
+    const userLogin = useSelector(state=>state.userLogin)
+    const{userInfo} = userLogin
     const cart = useSelector(state => state.cart)
     const shipping = useSelector(state=>state.shipping)
     const payment = useSelector(state=>state.payment)
     const {fetching,shippingAddress} = shipping
+    const [receiving,setReceiving] =useState(false)
     const {getting,paymentMethod}  = payment
     const {loading,cartItems} =cart
     console.log(cartItems)
@@ -33,35 +35,40 @@ function PlaceOrderScreen({ history }) {
    
 
     useEffect(() => {
+        if(!userInfo)
+        {
+            history.push('/login')
+        }
          if (!paymentMethod) {
         history.push('/payment')
     }
+        setReceiving(true)
        dispatch(getCart())
        dispatch(getShippingAddress())
        dispatch(getPaymentMethod())
+        setReceiving(false)
         console.log(cartItems)
         if (success) {
             history.push(`/order/${order.orderId}`)
             dispatch({ type: ORDER_CREATE_RESET })
         }
-    }, [dispatch,success, history])
+    }, [dispatch,success, history,receiving,userInfo])
 
     const placeOrder = () => {
+       
         dispatch(createOrder({
             cartItems: cartItems,
             shippingAddress: shippingAddress,
             paymentMethod: paymentMethod,
            itemsPrice: itemsPrice,
-          //  shippingPrice: shippingPrice,
-        //    taxPrice: taxPrice,
            totalPrice: totalPrice,
        }))
+       setReceiving(false)
     }
-    console.log('hello')
     return (
         <div>
             <CheckoutSteps step1 step2 step3 step4 />
-            {!cartItems||loading||fetching||getting?<Loader/>: <Row>
+            {!cartItems||loading||fetching||getting||receiving?<Loader/>: <Row>
                  <Col md={8}>
                      <ListGroup variant='flush'>
                          <ListGroup.Item>
@@ -158,6 +165,7 @@ function PlaceOrderScreen({ history }) {
                                     className='btn-block'
                                     disabled={cartItems === 0}
                                     onClick={placeOrder}
+                                    disabled={receiving}
                                 >
                                     Place Order
                                 </Button>

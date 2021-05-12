@@ -16,12 +16,12 @@ function AddOldStocks ({history}){
     const [Quantity,setQuantity]=useState('')
     const data = useSelector(state => state.addOldStocks)
     const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
+    const {userInfo,loggingOut} = userLogin
      const {error,loading, addOldStocks} = data
     useEffect(() => {
         if(!userInfo)
         {
-            history.push('/')
+            history.push('/login')
         }
         if(userInfo){
             dispatch(addOldStock(userInfo.sellerId))
@@ -35,7 +35,7 @@ function AddOldStocks ({history}){
     }
     return (
         <div>
-            {loading
+            {loading||loggingOut
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)

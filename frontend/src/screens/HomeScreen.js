@@ -12,11 +12,13 @@ import { listProducts } from '../actions/productActions'
 function HomeScreen({ history }) {
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList)
+    
     const { error, loading, products, page, pages } = productList
 
     let keyword = history.location.search
 
     useEffect(() => {
+       
         dispatch(listProducts(keyword))
 
     }, [dispatch, keyword])
@@ -33,7 +35,7 @@ function HomeScreen({ history }) {
                         <Row>
                       
                             {products.map(product => (                                
-                                <Col key={product.stockId} sm={12} md={6} lg={4} xl={3}>
+                                <Col key={product.stockId.stockId} sm={12} md={6} lg={4} xl={3}>
                                     <Product product={product} />
                                 </Col>
                             ))}

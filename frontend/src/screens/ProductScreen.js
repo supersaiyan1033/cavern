@@ -29,6 +29,10 @@ function ProductScreen({ match, history }) {
     } = productReviewCreate
 
     useEffect(() => {
+        // if(!userInfo)
+        // {
+        //     history.push('/login')
+        // }
         dispatch({type:PRODUCT_DETAILS_RESET})
         if (successProductReview) {
             setRating(0)
@@ -52,6 +56,9 @@ function ProductScreen({ match, history }) {
             comment,
             userInfo.buyerId,
         ))
+    }
+     function discountPercent(price,discount){
+        return (parseInt(price*100/(100-discount)))
     }
 
     return (
@@ -84,11 +91,21 @@ function ProductScreen({ match, history }) {
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
-                                            Price:  &#8377;{product.price}
+                                         
+                                      
+                                            Price:&#8377;{product.price}&nbsp;
+                                            
+                                           {product.offerId&& 
+                                                    <del>{discountPercent(product.price,product.discountPercent)}</del>
+                                                    }
+                                         
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
                                             Description: {product.productId.details}
+                                        </ListGroup.Item>
+                                                                                <ListGroup.Item>
+                                        Sold By: {product.sellerId.company}
                                         </ListGroup.Item>
                                     </ListGroup>
                                 </Col>
@@ -106,6 +123,7 @@ function ProductScreen({ match, history }) {
                                                     <Col>
                                                         <strong> &#8377;{product.price}</strong>
                                                     </Col>
+                                                   
                                                 </Row>
                                             </ListGroup.Item>
                                             <ListGroup.Item>
@@ -143,7 +161,7 @@ function ProductScreen({ match, history }) {
                                             )}
 
 
-                                            <ListGroup.Item>
+                                            {userInfo && userInfo.role=='buyer'&&<ListGroup.Item>
                                                 <Button
                                                     onClick={addToCartHandler}
                                                     className='btn-block'
@@ -151,8 +169,17 @@ function ProductScreen({ match, history }) {
                                                     type='button'>
                                                     Add to Cart
                                                 </Button>
-                                            </ListGroup.Item>
+                                            </ListGroup.Item>}
                                             
+                                              {!userInfo && <ListGroup.Item>
+                                                <Button
+                                                    onClick={addToCartHandler}
+                                                    className='btn-block'
+                                                    disabled={product.availableQuantity == 0||!userInfo}
+                                                    type='button'>
+                                                    Add to Cart
+                                                </Button>
+                                            </ListGroup.Item>}
                                             
                                         </ListGroup>
                                     </Card>

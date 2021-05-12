@@ -22,12 +22,12 @@ function AddOldStocks ({history}){
    	const [isFilePicked, setIsFilePicked] = useState(false);
     const data = useSelector(state => state.addNewStocks)
     const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
+    const {userInfo,loggingOut} = userLogin
      const {error,loading, addNewStocks} = data
     useEffect(() => {
         if(!userInfo)
         {
-            history.push('/')
+            history.push('/login')
         }
         dispatch(addNewStock())
     },[dispatch,userInfo])
@@ -49,7 +49,7 @@ function AddOldStocks ({history}){
     }
     return (
         <div>
-            {loading
+            {loading||loggingOut
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)

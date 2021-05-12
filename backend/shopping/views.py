@@ -18,8 +18,19 @@ def getAllProducts(request):
         productId__name__icontains=query,
         availableQuantity__gt=0
     )
-    serializer = StocksSerializer(stocks, many=True)
-    return Response(serializer.data)
+    array = []
+    for stock in stocks:
+
+        serializer = StocksSerializer(stock, many=False)
+        data = serializer.data
+        try:
+            offer = Offers.objects.get(stockId=stock.stockId)
+            offerserializer = OffersSerializer(offer, many=False)
+            data.update(offerserializer.data)
+        except Offers.DoesNotExist:
+            i = 1
+        array.append(data)
+    return Response(array)
 
 
 @api_view(['GET'])
@@ -39,6 +50,12 @@ def getProductDetails(request, Id):
     else:
 
         data = serializer.data
+    try:
+        offer = Offers.objects.get(stockId=Id)
+        offerserializer = OffersSerializer(offer, many=False)
+        data.update(offerserializer.data)
+    except Offers.DoesNotExist:
+        i = 1
     return Response(data)
 
 
@@ -184,15 +201,16 @@ def placeOrder(request):
     for cartItem in data['order']['cartItems']:
         stock = Stocks.objects.get(stockId=cartItem['stockId']['stockId'])
         if data['order']['paymentMethod'] == 'Cash on Delivery':
-            item = OrderedItems.objects.create(
-                orderId=order,
-                stockId=stock,
-                amount=cartItem['stockId']['price'],
-                quantity=cartItem['quantity'],
-                serialId=0
-            )
-            serializer = OrderedItemsSerializer(item, many=False)
-            array.append(serializer.data)
+            for i in range(0, cartItem['quantity']):
+                item = OrderedItems.objects.create(
+                    orderId=order,
+                    stockId=stock,
+                    amount=cartItem['stockId']['price'],
+                    quantity=1,
+                    serialId=0
+                )
+                serializer = OrderedItemsSerializer(item, many=False)
+                array.append(serializer.data)
         stock.availableQuantity = stock.availableQuantity - \
             cartItem['quantity']
         stock.save()

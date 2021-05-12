@@ -99,7 +99,6 @@ export const saveShippingAddress = (data) => (dispatch) => {
         type:CART_GET_SHIPPING_ADDRESS
     })
 
-    localStorage.setItem('shippingAddress', JSON.stringify(data))
 }
 
 export const getShippingAddress = () => (dispatch) => {
@@ -119,7 +118,6 @@ export const savePaymentMethod = (data) => (dispatch) => {
         type:CART_GET_PAYMENT_METHOD
     })
 
-    localStorage.setItem('paymentMethod', JSON.stringify(data))
 }
 export const getPaymentMethod = () => (dispatch) => {
     dispatch({

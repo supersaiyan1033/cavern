@@ -16,7 +16,7 @@ function DeliverProducts ({history}){
     const data = useSelector(state => state.deliverProducts)
     const {error,loading, deliverProducts} = data
     const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
+    const {userInfo,loggingOut} = userLogin
     useEffect(() => {
         if(!userInfo)
         {
@@ -26,7 +26,7 @@ function DeliverProducts ({history}){
     },[dispatch,userInfo])
     return (
         <div>
-            {loading
+            {loading||loggingOut
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)
