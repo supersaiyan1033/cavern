@@ -50,25 +50,32 @@ As we are Using Django and React as backend and frontend frameworks respectively
 
 -   Running the Backend Server Open command prompt and enter the following command
 
-    1.  cd directory/projectfilename/env/Scripts/activate here the directory indicates the parent directory where the project folder has been downloaded this activates the virtual environment.
+    1.  cd directory/projectfilename/env/Scripts/activate 
+    Here the directory indicates the parent directory where the project folder has been downloaded this activates the virtual environment.
 
-    2.  pip -r install requirements.txt This command install all the necessary packages required for the project in the environment.All the necessary packages along with the version are mentioned in the requirements.txt file Enter the following command twice
+    2.  pip -r install requirements.txt 
+    This command install all the necessary packages required for the project in the environment.All the necessary packages along with the version are mentioned in the requirements.txt file Enter the following command twice
 
-    3.  cd .. this navigates to the previous directory Later on
+    3.  cd .. 
+    This navigates to the previous directory Later on
 
-    4.  cd backend Next
+    4.  cd backend 
+    Next
 
-    5.  python manage.py migrate next
-
-    6.  python manage.py runserver This succesfully runs the django server
+    
+    6.  python manage.py runserver 
+    This succesfully runs the django server
 
 -   Running the Frontend Server Open another window of command Prompt run the following command
 
-    1.  cd directory/projectfilename/frontend later on
+    1.  cd directory/projectfilename/frontend 
+    later on
 
-    2.  npm install this installs all the packages needed to run the react server\>these are not posted in Github Repo as it takes time and data to upload and download the source code.
+    2.  npm install 
+    this installs all the packages needed to run the react server\>these are not posted in Github Repo as it takes time and data to upload and download the source code.
 
-    3.  npm start This runs the server and the website is automatically opened in the browser. This completes the setup of the website.
+    3.  npm start 
+    This runs the server and the website is automatically opened in the browser. This completes the setup of the website.
 
 User Manual
 ===========
