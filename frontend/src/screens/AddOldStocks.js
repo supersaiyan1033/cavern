@@ -63,6 +63,7 @@ function AddOldStocks ({history}){
                             <thead>
                                 <tr>
                                     <th>StockId</th>
+                                    <th>Name</th>
                                     <th>Price</th>
                                     <th>Last Updated</th>
                                     <th>Available Quantity</th>
@@ -73,7 +74,8 @@ function AddOldStocks ({history}){
                              <tbody>
                                 {addOldStocks.map(data => (
                                     <tr key={data.stockId}>
-                                         <td>{data.stockId}</td>
+                                        <td>{data.stockId}</td>
+                                        <td>{data.productId.name}</td>
                                         <td>{data.price}</td>
                                         <td>{data.dateOfAddition.substring(0,10)}</td>
                                         <td>{data.availableQuantity}</td>
