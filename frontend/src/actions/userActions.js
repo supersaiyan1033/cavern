@@ -69,6 +69,7 @@ export const login = (email, password,role) => async (dispatch) => {
             type: USER_LOGIN_SUCCESS,
             payload: data
         })
+          localStorage.setItem('userInfo', JSON.stringify(data))
         }
         else {
             dispatch({
@@ -79,7 +80,7 @@ export const login = (email, password,role) => async (dispatch) => {
             })
         }
 
-        // localStorage.setItem('userInfo', JSON.stringify(data))
+       
 
     } catch (error) {
         dispatch({

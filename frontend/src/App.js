@@ -65,7 +65,7 @@ function App({history}) {
           <Route path='/userorderrequests' component={UserOrderRequests} />
           <Route path='/addoffers' component={AddOffers} />
           <Route path='/removeoffers' component={RemoveOffers} />
-          <Route path='/admins' component={Admins} />      
+     
 
 
           <Route path='/admin/orderlist' component={OrderListScreen} /> 
