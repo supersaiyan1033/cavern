@@ -11,23 +11,29 @@ function CartScreen({ match, location, history }) {
     const stockId = match.params.id
     const qty = location.search ? Number(location.search.split('=')[1]) : 1
     const dispatch = useDispatch()
-
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo,loggingOut} = userLogin
     const cart = useSelector(state => state.cart)
     
     const { cartItems,loading } = cart
     const [fetch,setFetch] = useState(true)
     useEffect(() => {
+        if(!userInfo)
+        {
+            history.push('/login')
+        }
+        else{
         if (stockId) {
             dispatch(addToCart(stockId, qty))
             setFetch(false)
-            console.log(cartItems)
+           
         }
         else{
             dispatch(getCart())
-            console.log(cartItems)
         }
+    }
     },
-      [dispatch, stockId, qty]
+      [dispatch, stockId, qty,userInfo,loggingOut]
      )
 
 
@@ -43,7 +49,7 @@ function CartScreen({ match, location, history }) {
         <Row>
             <Col md={8}>
                 <h1>Shopping Cart</h1>
-                    {loading?<Loader/>:
+                    {loading || loggingOut?<Loader/>:
                 cartItems? cartItems.length === 0 ? (
                     <Message variant='info'>
                         Your cart is empty <Link to='/'>Go Back</Link>

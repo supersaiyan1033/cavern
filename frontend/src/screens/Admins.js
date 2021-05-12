@@ -19,11 +19,11 @@ function Admins ({history}){
     const data = useSelector(state => state.adminsList)
     const {error,loading, adminsList} = data
     const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
+    const {userInfo,loggingOut} = userLogin
     useEffect(() => {
         if(!userInfo)
         {
-            history.push('/')
+            history.push('/login')
         }
         dispatch(adminlist())
     },[dispatch,userInfo])
@@ -38,7 +38,7 @@ function Admins ({history}){
 
     return (
         <div>
-            {loading
+            {loading||loggingOut
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)

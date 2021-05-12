@@ -12,10 +12,6 @@ import ShippingScreen from './screens/ShippingScreen'
 import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
-import UserListScreen from './screens/UserListScreen'
-import UserEditScreen from './screens/UserEditScreen'
-import ProductListScreen from './screens/ProductListScreen'
-import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import VerifiedSellers from './screens/VerifiedSellers' 
 import UnverifiedSellers from './screens/UnverifiedSellers' 
@@ -27,11 +23,26 @@ import Admins from './screens/Admins'
 import UserOrderRequests from './screens/UserOrderRequests'
 import AddOffers from './screens/AddOffers'
 import RemoveOffers from './screens/RemoveOffers'
+import {useSelector,useDispatch} from 'react-redux'
+import {useState,useEffect} from 'react'
+import { login } from './actions/userActions'
+function App({history}) {
+  const userLogin = useSelector(state =>state.userLogin)
+  const {userInfo} = userLogin
+  const dispatch = useDispatch()
 
-function App() {
+  useEffect(()=>{
+   if(!userInfo||userInfo.role)
+   {
+     dispatch(login('','',''))
+   }
+   console.log(userInfo)
+   
+  },[dispatch])
+
   return (
     <Router>
-      <Header />
+      <Header history={history} />
       <main className="py-3">
         <Container>
           <Route path='/' component={HomeScreen} exact />
@@ -56,8 +67,6 @@ function App() {
           <Route path='/removeoffers' component={RemoveOffers} />
           <Route path='/admins' component={Admins} />      
 
-          <Route path='/admin/productlist' component={ProductListScreen} />
-          <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
 
           <Route path='/admin/orderlist' component={OrderListScreen} /> 
         </Container>

@@ -309,6 +309,15 @@ export const cancelOrder =(id,orderId)=>async(dispatch,getState) =>{
             type: ORDER_CANCEL_SUCCESS,
             payload: true
         })
+        //  const { data } = await axios.get(
+        //     `/api/order/${orderId}/`,
+        //     config
+        // )
+
+        // dispatch({
+        //     type: ORDER_DETAILS_SUCCESS,
+        //     payload: data
+        // })
 
 
     } catch (error) {

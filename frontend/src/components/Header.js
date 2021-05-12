@@ -1,44 +1,44 @@
-import React from 'react'
+import {React,useState,useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col,Form , Navbar, Nav, Container, Row, NavDropdown } from 'react-bootstrap'
+import { Col,Form , Navbar, Nav, Container, Row, NavDropdown, Spinner } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
 
-function Header() {
+function Header({history}) {
 
     const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
+    const [rolling,setRolling] = useState(false)
+    const { userInfo,loggingOut } = userLogin
 
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
+        setRolling(true)
         dispatch(logout())
-        // history.push('/')
+        setRolling(false)
+        // history.push('/login')
     }
+    useEffect(() => {
+       
+    }, [rolling])
 
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+ <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
                 <Container fluid>
-                    
+                    <LinkContainer to='/'>
+                        <Navbar.Brand>ShoppingCavern</Navbar.Brand>
+                    </LinkContainer>
+                      <SearchBox />
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        
-                            {userInfo ? ( 
-                                userInfo.role=='buyer'?(
-                                <Row className = "row">
+                                 {userInfo ?
+                                userInfo.role=='buyer'?
+                                
                                     <Nav className="ml-auto">
 
-                                        <LinkContainer to='/'>
-                                        <Navbar.Brand>Shopping Cavern</Navbar.Brand>
-                                        </LinkContainer>
-                                    
-                                        <SearchBox />
-
-                                    </Nav>
-                                    
-                                    <Nav className = "ml-5">
+                                      
 
                                         <LinkContainer to='/cart'>
                                         <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
@@ -49,18 +49,15 @@ function Header() {
                                             <NavDropdown.Item>Profile</NavDropdown.Item>
                                         </LinkContainer>
 
-                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                        {!rolling&& <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>}
+                                        {rolling &&<Spinner></Spinner>}
                                         </NavDropdown>
 
                                     </Nav>
-                                    
-                                    
-                                </Row>
-                                ):userInfo.role=='seller'?( <Row>
-                                 <Nav className = "ml-5">
-                                  <LinkContainer to='/'>
-                                        <Navbar.Brand>Shopping Cavern</Navbar.Brand>
-                                        </LinkContainer>
+                                       
+                                :userInfo.role=='seller'?
+                                 <Nav className = "ml-auto">
+                                  
 
                                         <NavDropdown title='Add Stocks' id='username'>
                                         <LinkContainer to='/addnewstocks'>
@@ -91,14 +88,10 @@ function Header() {
                                     </NavDropdown>
                                     </Nav>
 
-                                </Row>
-                                ):( <Row>
+                                
+                                : 
                                     <Nav className="ml-auto">
-                                       <LinkContainer to='/'>
-                                          <Navbar.Brand>Shopping Cavern</Navbar.Brand>
-                                      </LinkContainer>
-                                    </Nav>
-                                    <Nav className = "ml-5">
+                                      
                                     <LinkContainer to='/admins'>
                                         <Nav.Link >Admins</Nav.Link>
                                         </LinkContainer>
@@ -124,33 +117,22 @@ function Header() {
                                         </LinkContainer>
                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                                        </NavDropdown>
-                                   </Nav>
-                                </Row>)
-                                
+                                   </Nav>:
+                                   <Nav className="ml-auto">
+                                   
 
-                            ) : (   <Row>
-                                    
-                                    <LinkContainer to='/' className='mr-auto'>
-                                    <Navbar.Brand>Shopping Cavern</Navbar.Brand>
-                                    </LinkContainer>
-
-                                    <SearchBox />
-                                   {/* <div style={{'padding':'20px'}}></div> */}
-                                    {/* <LinkContainer to='/cart'>
-                                    <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
-                                    </LinkContainer> */}
-                                    <Nav className="ml-auto">
-                                    <LinkContainer to='/login'>
+                                        <LinkContainer to='/login'>
                                         <Nav.Link><i className="fas fa-user"></i>  Login</Nav.Link>
                                     </LinkContainer>
-                                     {/* <div style={{'padding':'10px'}}></div> */}
+                                    
                                     <LinkContainer to='/register'>
                                         <Nav.Link><i className="fas fa-user"></i>  Register</Nav.Link>
                                     </LinkContainer>
-                                    </Nav>
+                                        
+                                   
 
-                                    </Row>
-                                )}
+                                       
+                                   </Nav>}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
@@ -159,3 +141,5 @@ function Header() {
 }
 
 export default Header
+
+                         

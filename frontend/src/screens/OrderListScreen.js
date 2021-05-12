@@ -14,12 +14,12 @@ function OrderListScreen({ history }) {
     const { loading, error, orders } = orderList
 
     const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
+    const { userInfo,loggingOut } = userLogin
 
 
 
     useEffect(() => {
-        if (userInfo && userInfo.isAdmin) {
+        if (userInfo && userInfo.role=='admin') {
             dispatch(listOrders())
         } else {
             history.push('/login')
@@ -31,7 +31,7 @@ function OrderListScreen({ history }) {
     return (
         <div>
             <h1>Orders</h1>
-            {loading
+            {loading||loggingOut
                 ? (<Loader />)
                 : error
                     ? (<Message variant='danger'>{error}</Message>)

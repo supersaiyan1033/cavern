@@ -57,14 +57,20 @@ urlpatterns = [
     path('api/returnproduct/<oid>', auth_views.returnParticularProduct,
          name="returnParticularProduct"),
     path('api/addoldstocks/<sid>', auth_views.addOldStocks, name="addOldStocks"),
-    path('api/addoldparticularstock/<sid>/<skid>/<quantity>/', auth_views.addOldParticularStock, name="addOldParticularStock"),
-    path('api/addnewparticularstock/<sid>', auth_views.addNewParticularStock, name="addNewParticularStock"),
-    path('api/userorderrequests/<sid>/', auth_views.userOrderRequests, name="userOrderRequests"),
-    path('api/processrequest/<sid>/<oid>/', auth_views.processRequest, name="processRequest"),
+    path('api/addoldparticularstock/<sid>/<skid>/<quantity>/',
+         auth_views.addOldParticularStock, name="addOldParticularStock"),
+    path('api/addnewparticularstock/<sid>',
+         auth_views.addNewParticularStock, name="addNewParticularStock"),
+    path('api/userorderrequests/<sid>/',
+         auth_views.userOrderRequests, name="userOrderRequests"),
+    path('api/processrequest/<sid>/<oid>/',
+         auth_views.processRequest, name="processRequest"),
     path('api/addoffers/<sid>/', auth_views.addOffers, name="addOffers"),
-    path('api/addparticularoffer/<sid>/<skid>/<offer>/', auth_views.addParticularOffer, name="addParticularOffer"),
+    path('api/addparticularoffer/<sid>/<skid>/<offer>/',
+         auth_views.addParticularOffer, name="addParticularOffer"),
     path('api/removeoffers/<sid>/', auth_views.removeOffers, name="removeOffers"),
-    path('api/removeparticularoffer/<sid>/<ofid>/', auth_views.removeParticularOffer, name="removeParticularOffer"),
+    path('api/removeparticularoffer/<sid>/<ofid>/',
+         auth_views.removeParticularOffer, name="removeParticularOffer"),
     path('api/cart/product/<Id>', product_views.addToCart, name="add_to_cart"),
     path('api/mycart/<Id>', product_views.getCart, name="get_cart"),
     path('api/cart/delete/<Id>', product_views.deleteCartItem, name="delete_cart"),
@@ -73,7 +79,8 @@ urlpatterns = [
     path('api/myorders/<Id>', product_views.myOrders, name="my-orders"),
     path('api/cancel/', product_views.cancelOrder, name="cancel_order"),
     path('api/return/', product_views.returnOrder, name="return_order"),
-    path('api/image/<Id>', auth_views.imageUpload, name="image_upload")
+    path('api/image/<Id>', auth_views.imageUpload, name="image_upload"),
+    path('api/logout', auth_views.logout, name="logout")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

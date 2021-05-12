@@ -6,7 +6,7 @@ import { PayPalButton } from 'react-paypal-button-v2'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliverOrder,cancelOrder,returnOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET,ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 function OrderScreen({ match, history }) {
     const orderId = match.params.id
@@ -29,8 +29,8 @@ function OrderScreen({ match, history }) {
     const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
     const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
-
+    const { userInfo,loggingOut } = userLogin
+    const [receiving,setFetching] = useState(false)
 
     if (!loading && !error) {
         order.itemsPrice = order.items.reduce((acc, item) => acc + item.amount * item.quantity, 0).toFixed(2)
@@ -54,19 +54,12 @@ function OrderScreen({ match, history }) {
             history.push('/login')
         }
 
-        if (!order || successPay || order.orderId !== Number(orderId) || successDeliver) {
-            dispatch({ type: ORDER_PAY_RESET })
-            dispatch({ type: ORDER_DELIVER_RESET })
-
+        // if (!order  || order.orderId !== Number(orderId)) {
+           dispatch({type:ORDER_DETAILS_RESET})
             dispatch(getOrderDetails(orderId))
-        } else if (!order.paid=='Yes') {
-            if (!window.paypal) {
-                addPayPalScript()
-            } else {
-                setSdkReady(true)
-            }
-        }
-    }, [dispatch, order, orderId, successPay, successDeliver,userInfo])
+        
+        // }
+    }, [dispatch,userInfo,receiving])
 
 
     const successPaymentHandler = (paymentResult) => {
@@ -76,15 +69,18 @@ function OrderScreen({ match, history }) {
     const deliverHandler = () => {
         dispatch(deliverOrder(order))
     }
-    const cancelOrderHandler = (orderedItemId,orderId)=>{
+    const cancelOrderHandler = (orderedItemId,orderId)=> {
+         setFetching(true)
         dispatch(cancelOrder(orderedItemId,orderId))
+        dispatch({type:ORDER_DETAILS_RESET})
         dispatch(getOrderDetails(orderId))
+        setFetching(false)
     }
     const returnOrderHandler = (orderedItemId,orderId)=>{
         dispatch(returnOrder(orderedItemId,orderId))
         dispatch(getOrderDetails(orderId))
     }
-    return loading||fetching||getting ? (
+    return loading||fetching||getting||receiving || loggingOut ? (
         <Loader />
     ) : error ? (
         <Message variant='danger'>{error}</Message>
@@ -152,7 +148,7 @@ function OrderScreen({ match, history }) {
                                                                     type='button'
                                                               className='btn-block' onClick={()=>returnOrderHandler(item.orderedItemId,order.orderId)} >
                                                                        Return Order
-                                                                        </Button>):item.status!='Cancelled'&&item.status!='In Return'&&
+                                                                        </Button>):item.status!='Cancelled'&&item.status!='In Return'&&item.status!='Returned'&&
                                                                        ( <Button
                                                                            type='button'
                                                                          className='btn-block'onClick={()=>cancelOrderHandler(item.orderedItemId,order.orderId)} >

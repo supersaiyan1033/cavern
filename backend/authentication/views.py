@@ -21,57 +21,86 @@ from django.contrib.auth.hashers import *
 @api_view(['POST'])
 def login(request):
     data = request.data
-    if data['role'] == 'buyer':
-        try:
-            buyer = Buyers.objects.get(email=data['email'])
-        except Buyers.DoesNotExist:
-            buyer = None
-        if buyer != None:
-            serializer = BuyersSerializer(buyer, many=False)
-            record = serializer.data
-            if check_password(data['password'], record['password']):
-                dictionary = {'role': data['role']}
-                dictionary.update(serializer.data)
-                return Response(dictionary)
-            else:
-                return Response({'message': 'Incorrect password!!'}, status=500)
-        else:
-            return Response({'message': 'Register First!!'}, status=404)
-    elif data['role'] == 'admin':
-        try:
-            admin = Admins.objects.get(email=data['email'])
-        except Admins.DoesNotExist:
-            admin = None
-        if admin != None:
-            serializer = AdminsSerializer(admin, many=False)
-            record = serializer.data
-            if check_password(data['password'], record['password']):
-                dictionary = {'role': data['role']}
-                dictionary.update(serializer.data)
-                return Response(dictionary)
-            else:
-                return Response({'message': 'Incorrect Password!!'}, status=500)
-        else:
-            return Response({'message': 'You are not an admin'}, status=500)
-    else:
-        try:
-            seller = Sellers.objects.get(email=data['email'])
-        except Sellers.DoesNotExist:
-            seller = None
-        if seller != None:
-            serializer = SellersSerializer(seller, many=False)
-            record = serializer.data
-            if record['verified'] == 'YES':
-                if check_password(data['password'], record['password']):
-                    dictionary = {'role': data['role']}
-                    dictionary.update(serializer.data)
-                    return Response(dictionary)
+    if request.session.get('userId') == None:
+        if data['email'] != '':
+            if data['role'] == 'buyer':
+                try:
+                    buyer = Buyers.objects.get(email=data['email'])
+                except Buyers.DoesNotExist:
+                    buyer = None
+                if buyer != None:
+                    serializer = BuyersSerializer(buyer, many=False)
+                    record = serializer.data
+                    if check_password(data['password'], record['password']):
+                        dictionary = {'role': data['role']}
+                        dictionary.update(serializer.data)
+                        request.session['userId'] = buyer.buyerId
+                        request.session['role'] = 'buyer'
+                        return Response(dictionary)
+                    else:
+                        return Response({'message': 'Incorrect password!!'}, status=500)
                 else:
-                    return Response({'message': 'Incorrect Password!!'}, status=500)
+                    return Response({'message': 'Register First!!'}, status=404)
+            elif data['role'] == 'admin':
+                try:
+                    admin = Admins.objects.get(email=data['email'])
+                except Admins.DoesNotExist:
+                    admin = None
+                if admin != None:
+                    serializer = AdminsSerializer(admin, many=False)
+                    record = serializer.data
+                    if check_password(data['password'], record['password']):
+                        dictionary = {'role': data['role']}
+                        dictionary.update(serializer.data)
+                        request.session['userId'] = admin.adminId
+                        request.session['role'] = 'admin'
+                        return Response(dictionary)
+                    else:
+                        return Response({'message': 'Incorrect Password!!'}, status=500)
+                else:
+                    return Response({'message': 'You are not an admin'}, status=500)
             else:
-                return Response({'message': "You are not verified yet"}, status=500)
+                try:
+                    seller = Sellers.objects.get(email=data['email'])
+                except Sellers.DoesNotExist:
+                    seller = None
+                if seller != None:
+                    serializer = SellersSerializer(seller, many=False)
+                    record = serializer.data
+                    if record['verified'] == 'YES':
+                        if check_password(data['password'], record['password']):
+                            dictionary = {'role': data['role']}
+                            dictionary.update(serializer.data)
+                            request.session['userId'] = seller.sellerId
+                            request.session['role'] = 'seller'
+                            return Response(dictionary)
+                        else:
+                            return Response({'message': 'Incorrect Password!!'}, status=500)
+                    else:
+                        return Response({'message': "You are not verified yet"}, status=500)
+                else:
+                    return Response({'message': "Register First!!"}, status=500)
         else:
-            return Response({'message': "Register First!!"}, status=500)
+            return Response({})
+    else:
+        userId = request.session.get('userId')
+        role = request.session.get('role')
+        if role == 'buyer':
+            buyer = Buyers.objects.get(buyerId=userId)
+            serializer = BuyersSerializer(buyer, many=False)
+            dictionary = {'role': role}
+            dictionary.update(serializer.data)
+        if role == 'seller':
+            seller = Sellers.objects.get(sellerId=userId)
+            serializer = SellersSerializer(seller, many=False)
+            dictionary = {'role': role}
+            dictionary.update(serializer.data)
+        if role == 'admin':
+            admin = Admins.objects.get(adminId=userId)
+            serializer = AdminsSerializer(admin, many=False)
+            dictionary = {'role': role}
+            dictionary.update(serializer.data)
+        return Response(dictionary)
 
 
 @api_view(['POST'])
@@ -91,6 +120,8 @@ def register(request):
             buyerId=buyer
         )
         dictionary = {'role': data['role'], 'address': data['address']}
+        request.session['userId'] = buyer.buyerId
+        request.session['role'] = 'buyer'
         dictionary.update(serializer.data)
         return Response(dictionary)
     else:
@@ -105,6 +136,8 @@ def register(request):
                 data['password'], salt=None, hasher='default')
         )
         serializer = SellersSerializer(seller, many=False)
+        request.session['userId'] = seller.sellerId
+        request.session['role'] = 'seller'
         return Response({'message': "seller under verification"}, status=500)
 
 
@@ -321,92 +354,106 @@ def imageUpload(request, Id):
 
 
 @api_view(['GET'])
-def userOrderRequests(request,sid):
-    temp=Stocks.objects.filter(sellerId=sid)
-    list=[]
+def userOrderRequests(request, sid):
+    temp = Stocks.objects.filter(sellerId=sid)
+    list = []
     for t in temp:
         try:
-            request=OrderedItems.objects.filter(stockId=t.stockId,status='Order Placed')
+            request = OrderedItems.objects.filter(
+                stockId=t.stockId, status='Order Placed')
             for r in request:
-                serializer=OrderedItemsSerializer(r,many=False)
+                serializer = OrderedItemsSerializer(r, many=False)
                 list.append(serializer.data)
         except OrderedItems.DoesNotExist:
-            i=1
+            i = 1
     return Response(list)
 
 
 @api_view(['GET'])
-def processRequest(request,sid,oid):
-    item=OrderedItems.objects.get(orderedItemId=oid)
-    StockId=item.stockId
-    previousitem=OrderedItems.objects.filter(stockId=StockId).order_by('-serialId')[0]
-    serial=previousitem.serialId
-    item.serialId=int(serial)+1
-    item.status='In Transit'
-    item.save()    
-    temp=Stocks.objects.filter(sellerId=sid)
-    list=[]
+def processRequest(request, sid, oid):
+    item = OrderedItems.objects.get(orderedItemId=oid)
+    StockId = item.stockId
+    previousitem = OrderedItems.objects.filter(
+        stockId=StockId).order_by('-serialId')[0]
+    serial = previousitem.serialId
+    item.serialId = int(serial)+1
+    item.status = 'In Transit'
+    item.save()
+    temp = Stocks.objects.filter(sellerId=sid)
+    list = []
     for t in temp:
         try:
-            request=OrderedItems.objects.filter(stockId=t.stockId,status='Order Placed')
-            for r in request :
-                serializer=OrderedItemsSerializer(r,many=False)
+            request = OrderedItems.objects.filter(
+                stockId=t.stockId, status='Order Placed')
+            for r in request:
+                serializer = OrderedItemsSerializer(r, many=False)
                 list.append(serializer.data)
         except:
-            i=1
+            i = 1
     return Response(list)
 
-@api_view(['GET'])
-def addOffers(request,sid):
-    stocks=Stocks.objects.filter(sellerId=sid)
-    serializer=StocksSerializer(stocks,many=True)
-    return Response(serializer.data)
 
 @api_view(['GET'])
-def addParticularOffer(request,sid,skid,offer):
-    stock=Stocks.objects.get(stockId=int(skid))
-    Offers.objects.create(stockId=stock,discountPercent=int(offer))
-    price=stock.price
-    price=price*(0.01)*(100-int(offer))
-    stock.price=int(price)
+def addOffers(request, sid):
+    stocks = Stocks.objects.filter(sellerId=sid)
+    serializer = StocksSerializer(stocks, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def addParticularOffer(request, sid, skid, offer):
+    stock = Stocks.objects.get(stockId=int(skid))
+    Offers.objects.create(stockId=stock, discountPercent=int(offer))
+    price = stock.price
+    price = price*(0.01)*(100-int(offer))
+    stock.price = int(price)
     stock.save()
-    stocks=Stocks.objects.filter(sellerId=sid)
-    serializer=StocksSerializer(stocks,many=True)
+    stocks = Stocks.objects.filter(sellerId=sid)
+    serializer = StocksSerializer(stocks, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-def removeOffers(request,sid):
-    list=[]
-    temp=Stocks.objects.filter(sellerId=sid)
-    for t in temp :
+def removeOffers(request, sid):
+    list = []
+    temp = Stocks.objects.filter(sellerId=sid)
+    for t in temp:
         try:
-            offer=Offers.objects.get(stockId=t.stockId)
-            serializer= OffersSerializer(offer,many=False)
+            offer = Offers.objects.get(stockId=t.stockId)
+            serializer = OffersSerializer(offer, many=False)
             print(serializer.data)
             list.append(serializer.data)
-        except Offers.DoesNotExist: 
+        except Offers.DoesNotExist:
             continue
     return Response(list)
 
+
 @api_view(['GET'])
-def removeParticularOffer(request,sid,ofid):
-    o=Offers.objects.get(offerId=ofid)
-    per=o.discountPercent
-    id=o.stockId.stockId
+def removeParticularOffer(request, sid, ofid):
+    o = Offers.objects.get(offerId=ofid)
+    per = o.discountPercent
+    id = o.stockId.stockId
     print(type(id))
     print(id)
-    s=Stocks.objects.get(stockId=id)
-    ip=s.price
-    s.price=int((100*ip)/(100-per))
+    s = Stocks.objects.get(stockId=id)
+    ip = s.price
+    s.price = int((100*ip)/(100-per))
     s.save()
     o.delete()
-    list=[]
-    temp=Stocks.objects.filter(sellerId=sid)
-    for t in temp :
+    list = []
+    temp = Stocks.objects.filter(sellerId=sid)
+    for t in temp:
         try:
-            offer=Offers.objects.get(stockId=t.stockId)
-            serializer= OffersSerializer(offer,many=False)
+            offer = Offers.objects.get(stockId=t.stockId)
+            serializer = OffersSerializer(offer, many=False)
             list.append(serializer.data)
-        except Offers.DoesNotExist: 
+        except Offers.DoesNotExist:
             continue
     return Response(list)
+
+
+@api_view(['POST'])
+def logout(request):
+    request.session.flush()
+    request.session.clear_expired()
+    return Response(status=200)
