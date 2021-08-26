@@ -8,7 +8,7 @@ class Products(models.Model):
     name = models.CharField(max_length=254)
     brand = models.CharField(max_length=100)
     category = models.CharField(max_length=100)
-    image = models.CharField(max_length=300, default="")
+    image = models.ImageField(blank=True, null=True)
     details = models.CharField(max_length=254)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0)
     votes = models.IntegerField(default=0)

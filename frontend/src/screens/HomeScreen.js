@@ -7,28 +7,21 @@ import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import { listProducts } from '../actions/productActions'
-import { login } from '../actions/userActions'
-
 
 
 function HomeScreen({ history }) {
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList)
-    const userLogin = useSelector(state=>state.userLogin)
-    const {userInfo} = userLogin
     
     const { error, loading, products, page, pages } = productList
 
     let keyword = history.location.search
 
     useEffect(() => {
-       if(!userInfo)
-       {
-            dispatch(login('','',''))
-       }
+       
         dispatch(listProducts(keyword))
 
-    }, [dispatch, keyword,userInfo])
+    }, [dispatch, keyword])
 
     return (
         <div>

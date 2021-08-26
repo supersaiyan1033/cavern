@@ -18,11 +18,10 @@ function Header({history}) {
         dispatch(logout())
         setRolling(false)
         // history.push('/login')
-        window.location.hash ='/login'
     }
     useEffect(() => {
        
-    }, [rolling,userInfo])
+    }, [rolling])
 
     return (
         <header>

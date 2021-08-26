@@ -59,7 +59,7 @@ function OrderScreen({ match, history }) {
             dispatch(getOrderDetails(orderId))
         
         // }
-    }, [dispatch,userInfo,receiving,cancelorder,returnorder])
+    }, [dispatch,userInfo,receiving])
 
 
     const successPaymentHandler = (paymentResult) => {

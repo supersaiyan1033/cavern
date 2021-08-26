@@ -12,18 +12,12 @@ from datetime import datetime
 @api_view(['GET'])
 def getAllProducts(request):
     query = request.query_params.get('keyword')
-    if query == None or query == '':
+    if query == None:
         query = ''
-        stocks = Stocks.objects.filter(
-            productId__name__icontains=query,
-            availableQuantity__gt=0
-        )[:8]
-    else:
-        stocks = Stocks.objects.filter(
-            productId__name__icontains=query,
-            availableQuantity__gt=0
-        ) | Stocks.objects.filter(productId__category__icontains=query, availableQuantity__gt=0) | Stocks.objects.filter(productId__brand__icontains=query, availableQuantity__gt=0)
-
+    stocks = Stocks.objects.filter(
+        productId__name__icontains=query,
+        availableQuantity__gt=0
+    )
     array = []
     for stock in stocks:
 
@@ -179,13 +173,12 @@ def getOrderById(request, Id):
 @api_view(['GET'])
 def myOrders(request, Id):
     buyer = Buyers.objects.get(buyerId=Id)
-    orders = Orders.objects.filter(buyerId=Id).order_by('-orderId')
+    orders = Orders.objects.filter(buyerId=Id)
     serial = OrdersSerializer(orders, many=True)
     dictionary = serial.data
     i = 0
     for order in orders:
-        orderItem = OrderedItems.objects.filter(
-            orderId=order.orderId)
+        orderItem = OrderedItems.objects.filter(orderId=order.orderId)
         serializer = OrderedItemsSerializer(orderItem, many=True)
         dictionary[i].update({'items': serializer.data})
     return Response(dictionary)

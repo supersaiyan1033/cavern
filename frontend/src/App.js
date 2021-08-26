@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap'
-import { HashRouter as Router, Route,useHistory } from 'react-router-dom'
+import { HashRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomeScreen from './screens/HomeScreen'
@@ -26,21 +26,19 @@ import RemoveOffers from './screens/RemoveOffers'
 import {useSelector,useDispatch} from 'react-redux'
 import {useState,useEffect} from 'react'
 import { login } from './actions/userActions'
-function App() {
+function App({history}) {
   const userLogin = useSelector(state =>state.userLogin)
   const {userInfo} = userLogin
   const dispatch = useDispatch()
-  let history = useHistory();
 
-  // useEffect(()=>{
-  //  if(!userInfo||userInfo.role)
-  //  {
-  //    dispatch(login('','',''))
-     
-  //  }
-  //  console.log(userInfo)
+  useEffect(()=>{
+   if(!userInfo||userInfo.role)
+   {
+     dispatch(login('','',''))
+   }
+   console.log(userInfo)
    
-  // },[dispatch])
+  },[dispatch])
 
   return (
     <Router>
