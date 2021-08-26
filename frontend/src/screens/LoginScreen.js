@@ -22,6 +22,7 @@ function LoginScreen({ location, history }) {
     useEffect(() => {
         if (userInfo) {
             history.push(redirect)
+            // window.history.back();
         }
     }, [history, userInfo, redirect])
 

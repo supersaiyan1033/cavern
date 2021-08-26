@@ -7,7 +7,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import HomeIcon from '@material-ui/icons/Home';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-function Header() {
+function Header({}) {
     return (
         <Navbar bg="light" expand="lg" className="outernav">
   <Navbar.Brand href="#home" className ="header-brand"><span><LocalMallIcon fontSize="large"/></span> Shopping Cavern</Navbar.Brand>
