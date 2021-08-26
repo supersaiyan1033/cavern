@@ -44,7 +44,7 @@ urlpatterns = [
     # admin functionalities
     path('api/verifiedsellers/', auth_views.verifiedSellers, name="verifiedSellers"),
     path('api/unverifiedsellers/',
-         auth_views.unverifiedSellers, name="verifiedSellers"),
+         auth_views.unverifiedSellers, name="unverifiedSellers"),
     path('api/verifyseller/<sid>/', auth_views.verifySeller, name="verifySeller"),
     path('api/removeseller/<sid>/', auth_views.removeSeller, name="removeSeller"),
     path('api/adminslist/', auth_views.adminsList, name="adminsList"),

@@ -30,7 +30,7 @@ function Product({ product }) {
                 {!product.offerId?(<Card.Text as="h5">
                     &#8377;{product.price}
                 </Card.Text>):(<Card.Text as="h5" >
-                     &#8377;{product.price}<span style={{'font-size':'12px','margin-left':'10px'}}><del>{discountPercent(product.price,product.discountPercent)}</del></span>
+                     &#8377;{product.price}<span style={{'fontSize':'12px','marginLeft':'10px'}}><del>{discountPercent(product.price,product.discountPercent)}</del></span>
                 </Card.Text>)}
                   <Card.Text>
                     sold by:{product.sellerId.company}
