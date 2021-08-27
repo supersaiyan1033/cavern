@@ -1,7 +1,9 @@
-frontend/node_modules
+backend/frontend/node_modules
 backend/backend/__pycache__
 backend/authentication/__pycache__
 backend/shopping/__pycache__
 backend/authentication/migrations/__pycache__
 backend/shopping/migrations/
 backend/backend/__pycache__
+backend/frontend/.eslintcache
+env
